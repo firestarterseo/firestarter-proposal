@@ -81,6 +81,16 @@ export default function LoginPage() {
           </form>
         )}
         {error && <p className="login-error">{error}</p>}
+        {status !== "sent" && status !== "verifying" && email && (
+          <button
+            type="button"
+            className="link-toggle"
+            style={{ marginTop: 12 }}
+            onClick={() => { setStatus("sent"); setError(""); }}
+          >
+            Already have a code? Enter it instead
+          </button>
+        )}
         <p className="login-note">
           New team member? Ask an admin to invite you from the Supabase dashboard first —
           this app doesn't have open self-signup.
