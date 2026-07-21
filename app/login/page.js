@@ -47,7 +47,7 @@ export default function LoginPage() {
   return (
     <div className="login-wrap">
       <div className="login-card">
-        <img src="/firestarter-logo.webp" alt="Firestarter SEO" className="brand-logo" />
+        <img src="/firestarter-logo.png" alt="Firestarter SEO" className="brand-logo" />
         <p>Proposals — team sign in</p>
         {status === "sent" || status === "verifying" ? (
           <>

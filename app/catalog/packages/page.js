@@ -5,7 +5,7 @@ export default function PackagesCatalogPage() {
   return (
     <div className="page">
       <div className="brand-bar">
-        <img src="/firestarter-logo.webp" alt="Firestarter SEO" className="brand-logo" />
+        <img src="/firestarter-logo.png" alt="Firestarter SEO" className="brand-logo" />
         <span className="brand-tagline">Proposals</span>
         <div className="spacer" />
         <nav>

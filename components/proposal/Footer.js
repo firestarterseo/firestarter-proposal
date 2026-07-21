@@ -2,7 +2,7 @@ export default function Footer() {
   return (
     <div className="footer">
       <div>
-        <img src="/firestarter-logo.webp" alt="Firestarter SEO" style={{ height: 36, marginBottom: 6 }} />
+        <img src="/firestarter-logo.png" alt="Firestarter SEO" style={{ height: 36, marginBottom: 6 }} />
         <div className="footer-sub">Denver, Colorado &middot; Search Engine Optimization &middot; Est. 2009</div>
       </div>
       <div className="footer-r">
