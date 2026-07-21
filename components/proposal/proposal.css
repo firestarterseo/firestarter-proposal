@@ -1,0 +1,281 @@
+/* Ported from total_install_proposal_v3.html. Every selector is scoped under
+   `.proposal` (the wrapper the template components render inside) so this
+   document's design system never leaks into the app chrome in app/globals.css,
+   and vice versa — custom properties are defined on `.proposal` itself rather
+   than `:root` for the same reason. */
+
+.proposal, .proposal *, .proposal *::before, .proposal *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.proposal {
+  --fo: #F48020; --fr: #F15B41; --fd: #1E1526; --fs: #2d3748;
+  --bg: #ffffff; --bg2: #f7f7f8; --border: #e4e4e7;
+  --text: #18181b; --text2: #52525b;
+  --red: #842029; --amber: #856404; --green: #1a5c2a;
+  font-family: "Overpass", sans-serif; background: var(--bg); color: var(--text);
+  max-width: 860px; margin: 0 auto;
+}
+
+/* TYPE */
+.proposal .eye    { font-family: "Roboto Slab", serif; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--fo); margin-bottom: 14px; display: block; }
+.proposal .eye-lt { font-family: "Roboto Slab", serif; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--fo); margin-bottom: 14px; display: block; }
+.proposal .h2     { font-family: "Fjalla One", sans-serif; font-size: 44px; text-transform: uppercase; line-height: .95; color: var(--text); margin-bottom: 18px; }
+.proposal .h2 em  { color: var(--fo); font-style: normal; }
+.proposal .h2-lt  { font-family: "Fjalla One", sans-serif; font-size: 44px; text-transform: uppercase; line-height: .95; color: #fff; margin-bottom: 18px; }
+.proposal .h2-lt em { color: var(--fo); font-style: normal; }
+.proposal .intro    { font-size: 15px; line-height: 1.75; color: var(--text2); max-width: 580px; margin-bottom: 36px; }
+.proposal .intro-lt { font-size: 15px; line-height: 1.75; color: #888; max-width: 580px; margin-bottom: 36px; }
+.proposal .sec-label    { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--text2); margin-bottom: 12px; display: block; }
+.proposal .sec-label-lt { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: #444; margin-bottom: 12px; display: block; }
+
+/* SECTIONS */
+.proposal .sec       { padding: 56px; border-bottom: 1px solid var(--border); background: var(--bg); }
+.proposal .sec-dark  { padding: 56px; border-bottom: 1px solid #1e1e1e; background: #111; }
+.proposal .sec-mid   { padding: 56px; border-bottom: 1px solid var(--border); background: var(--bg2); }
+.proposal .sec-brand { padding: 56px; border-bottom: 1px solid #2d2535; background: var(--fd); }
+
+/* PULL QUOTE */
+.proposal .pq    { border-left: 4px solid var(--fo); padding: 16px 22px; background: var(--bg2); border-radius: 0 8px 8px 0; margin: 28px 0; font-size: 14px; color: var(--text2); line-height: 1.75; }
+.proposal .pq strong { color: var(--text); }
+.proposal .pq-lt { border-left: 4px solid var(--fo); padding: 16px 22px; background: #1a1a1a; border-radius: 0 8px 8px 0; margin: 28px 0; font-size: 14px; color: #888; line-height: 1.75; }
+.proposal .pq-lt strong { color: #fff; }
+
+/* COVER */
+.proposal .cover { background: var(--fd); padding: 64px 56px 56px; position: relative; overflow: hidden; }
+.proposal .cover::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, var(--fr), var(--fo)); }
+.proposal .cover-eye { font-family: "Roboto Slab", serif; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--fo); margin-bottom: 20px; display: block; }
+.proposal .cover h1 { font-family: "Fjalla One", sans-serif; font-size: 72px; line-height: .92; color: #fff; text-transform: uppercase; margin-bottom: 6px; }
+.proposal .cover h1 em { color: var(--fo); font-style: normal; }
+.proposal .cover-sub { font-family: "Roboto Slab", serif; font-size: 16px; color: #555; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 52px; }
+.proposal .cover-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 1px solid #2d2535; padding-top: 32px; }
+.proposal .cover-cell label { display: block; font-family: "Roboto Slab", serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--fo); margin-bottom: 5px; }
+.proposal .cover-cell span { font-size: 13px; color: #aaa; }
+.proposal .trust-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px; padding-top: 28px; border-top: 1px solid #2d2535; }
+.proposal .tpill { font-size: 11px; color: #555; border: 1px solid #2d2535; padding: 4px 12px; border-radius: 20px; }
+
+/* STAT BAR */
+.proposal .stat3 { display: grid; grid-template-columns: 1fr 1fr 1fr; background: var(--fd); border-radius: 8px; overflow: hidden; margin: 28px 0 0; }
+.proposal .stat3-cell { padding: 22px 18px; border-right: 1px solid #2d2535; }
+.proposal .stat3-cell:last-child { border-right: none; }
+.proposal .stat3-num { font-family: "Fjalla One", sans-serif; font-size: 36px; color: var(--fo); line-height: 1; margin-bottom: 4px; }
+.proposal .stat3-label { font-size: 12px; color: #888; line-height: 1.5; }
+
+/* LEGEND */
+.proposal .legend { display: flex; gap: 24px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text2); align-items: center; justify-content: center; }
+.proposal .leg-item { display: flex; align-items: center; gap: 6px; }
+.proposal .leg-swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+/* GAP ANALYSIS */
+.proposal .ledger { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 12px 0 28px; }
+.proposal .ledger-head { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; background: var(--fs); padding: 10px 16px; }
+.proposal .ledger-head span { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: #ccc; }
+.proposal .ledger-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 10px 16px; border-top: 1px solid var(--border); align-items: center; }
+.proposal .ledger-row:nth-child(odd)  { background: var(--bg2); }
+.proposal .ledger-row:nth-child(even) { background: var(--bg); }
+.proposal .lkw { font-size: 13px; color: var(--text); }
+.proposal .lkw.hot { font-weight: 700; color: var(--fo); }
+.proposal .badge { display: inline-block; font-family: "Roboto Slab", serif; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+.proposal .b-bad { background: #f8d7da; color: var(--red); }
+.proposal .b-mid { background: #fff3cd; color: var(--amber); }
+.proposal .b-good { background: #d4edda; color: var(--green); }
+.proposal .opp { font-size: 10px; color: var(--fo); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+
+/* AUTHORITY (gap analysis) */
+.proposal .auth-split { display: grid; grid-template-columns: 2fr 3fr; gap: 24px; align-items: start; margin: 24px 0; }
+.proposal .auth-ours { background: var(--bg); border: 2px solid var(--fo); border-radius: 10px; padding: 22px 20px; }
+.proposal .auth-ours-label { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--fo); margin-bottom: 8px; display: block; }
+.proposal .auth-ours-dr { font-family: "Fjalla One", sans-serif; font-size: 52px; color: var(--text); line-height: 1; }
+.proposal .auth-ours-stat { font-size: 12px; color: var(--text2); margin-top: 6px; }
+.proposal .auth-ours-note { margin-top: 10px; padding: 14px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; font-size: 12px; color: var(--text2); line-height: 1.6; }
+.proposal .auth-ours-note strong { color: var(--text); display: block; margin-bottom: 4px; }
+.proposal .auth-competitors { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.proposal .auth-comp { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+.proposal .auth-comp-name { font-size: 10px; color: var(--text2); margin-bottom: 6px; }
+.proposal .auth-comp-dr { font-family: "Fjalla One", sans-serif; font-size: 30px; color: var(--text); line-height: 1; }
+.proposal .auth-comp-dr.alert { color: var(--fo); }
+.proposal .auth-comp-stat { font-size: 11px; color: var(--text2); margin-top: 4px; }
+.proposal .auth-comp-note { font-size: 10px; color: var(--fo); margin-top: 4px; font-weight: 600; }
+
+/* STRATEGY LAYERS */
+.proposal .strategy-layers { display: grid; grid-template-columns: 1fr; gap: 2px; margin: 32px 0; }
+.proposal .layer { background: #1a1a1a; border-left: 4px solid var(--fo); padding: 28px 28px 28px 24px; }
+.proposal .layer.l2 { border-left-color: var(--fr); }
+.proposal .layer-letter { font-family: "Fjalla One", sans-serif; font-size: 56px; color: var(--fo); opacity: .18; line-height: 1; float: right; margin: -8px -4px 0 16px; }
+.proposal .layer-letter.r { color: var(--fr); }
+.proposal .layer-eye { font-family: "Roboto Slab", serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--fo); margin-bottom: 8px; display: block; }
+.proposal .layer-eye.r { color: var(--fr); }
+.proposal .layer-title { font-family: "Fjalla One", sans-serif; font-size: 22px; text-transform: uppercase; color: #fff; margin-bottom: 10px; }
+.proposal .layer-body { font-size: 13px; color: #888; line-height: 1.7; margin-bottom: 16px; }
+.proposal .layer-items { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.proposal .li-card { background: #111; border: 1px solid #2a2a2a; border-radius: 6px; padding: 12px 14px; }
+.proposal .li-title { font-family: "Roboto Slab", serif; font-size: 12px; color: #fff; margin-bottom: 4px; }
+.proposal .li-desc { font-size: 11px; color: #555; line-height: 1.55; }
+.proposal .ch-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+.proposal .ch-li { display: flex; gap: 10px; background: #111; border: 1px solid #2a2a2a; border-radius: 6px; padding: 10px 12px; align-items: flex-start; }
+.proposal .ch-li-num { font-family: "Fjalla One", sans-serif; font-size: 18px; color: var(--fo); line-height: 1; flex-shrink: 0; width: 18px; }
+.proposal .ch-li-title { font-family: "Roboto Slab", serif; font-size: 11px; color: #ddd; margin-bottom: 2px; }
+.proposal .ch-li-desc { font-size: 11px; color: #555; line-height: 1.5; }
+
+/* CASE STUDIES */
+.proposal .cases { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 28px 0; }
+.proposal .case-c { background: #1a1a1a; border: 1px solid #252525; border-radius: 10px; padding: 20px 18px; }
+.proposal .case-ind { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--fo); margin-bottom: 12px; }
+.proposal .case-num { font-family: "Fjalla One", sans-serif; font-size: 44px; color: #fff; line-height: 1; margin-bottom: 4px; }
+.proposal .case-lbl { font-size: 12px; color: #666; line-height: 1.4; margin-bottom: 12px; }
+.proposal .case-co { font-size: 11px; color: #444; border-top: 1px solid #252525; padding-top: 10px; }
+
+/* SOURCE */
+.proposal .geo-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: #2d2535; border-radius: 8px; overflow: hidden; margin-bottom: 36px; }
+.proposal .gs-cell { background: var(--fd); padding: 20px 18px; }
+.proposal .gs-num { font-family: "Fjalla One", sans-serif; font-size: 36px; color: var(--fo); line-height: 1; margin-bottom: 4px; }
+.proposal .gs-label { font-size: 12px; color: #666; line-height: 1.5; }
+.proposal .contrast { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #2d2535; border-radius: 10px; overflow: hidden; }
+.proposal .ct-head { padding: 12px 20px; font-family: "Roboto Slab", serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; background: #1a1119; border-bottom: 1px solid #2d2535; }
+.proposal .ct-head.bad  { color: #555; border-right: 1px solid #2d2535; }
+.proposal .ct-head.good { color: var(--fo); }
+.proposal .ct-cell { padding: 11px 20px; font-size: 13px; line-height: 1.5; border-bottom: 1px solid #1e1e1e; }
+.proposal .ct-cell:nth-last-child(-n+2) { border-bottom: none; }
+.proposal .ct-cell.bad  { color: #555; border-right: 1px solid #1e1e1e; font-style: italic; }
+.proposal .ct-cell.good { color: #ccc; }
+.proposal .ct-cell.good strong { color: var(--fo); }
+
+.proposal .pillars-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 28px; }
+.proposal .pillar-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.proposal .pc-head { padding: 16px 18px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.proposal .pc-letter { font-family: "Fjalla One", sans-serif; font-size: 52px; color: var(--fo); opacity: .18; line-height: 1; flex-shrink: 0; margin-top: -6px; }
+.proposal .pc-num { font-family: "Roboto Slab", serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--fo); margin-bottom: 4px; }
+.proposal .pc-title { font-family: "Fjalla One", sans-serif; font-size: 16px; text-transform: uppercase; color: var(--text); line-height: 1.1; margin-bottom: 4px; }
+.proposal .pc-goal { font-size: 11px; color: var(--text2); font-style: italic; line-height: 1.4; }
+.proposal .pc-body { padding: 12px 18px 14px; }
+.proposal .pc-desc { font-size: 12px; color: var(--text2); line-height: 1.6; margin-bottom: 10px; }
+.proposal .pc-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.proposal .pc-tag { font-size: 10px; color: var(--text2); border: 1px solid var(--border); border-radius: 10px; padding: 2px 7px; }
+
+.proposal .source-callout { margin-top: 28px; background: var(--fd); border-radius: 10px; padding: 28px 32px; display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; gap: 24px; align-items: center; }
+.proposal .sc-stat { text-align: center; }
+.proposal .sc-num { font-family: "Fjalla One", sans-serif; font-size: 36px; color: var(--fo); line-height: 1; margin-bottom: 4px; }
+.proposal .sc-label { font-size: 11px; color: #666; line-height: 1.5; }
+.proposal .sc-div { background: #2d2535; align-self: stretch; }
+
+.proposal .tiol-box { margin-top: 24px; border: 1.5px solid var(--fo); border-radius: 10px; padding: 24px 28px; }
+.proposal .tiol-eye { font-family: "Roboto Slab", serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--fo); margin-bottom: 12px; display: block; }
+.proposal .tiol-head { font-family: "Fjalla One", sans-serif; font-size: 18px; text-transform: uppercase; color: var(--text); margin-bottom: 14px; }
+.proposal .tiol-items { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.proposal .tiol-item { display: flex; gap: 10px; align-items: flex-start; }
+.proposal .tiol-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fo); flex-shrink: 0; margin-top: 5px; }
+.proposal .tiol-text { font-size: 12px; color: var(--text2); line-height: 1.6; }
+.proposal .tiol-text strong { color: var(--text); display: block; margin-bottom: 2px; }
+
+/* AUTHORITY (section 04) */
+.proposal .auth-tiers { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 28px 0; }
+.proposal .at-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 22px 18px; }
+.proposal .at-num { font-family: "Fjalla One", sans-serif; font-size: 36px; color: var(--fo); opacity: .3; line-height: 1; margin-bottom: 10px; }
+.proposal .at-title { font-family: "Fjalla One", sans-serif; font-size: 15px; text-transform: uppercase; color: var(--text); margin-bottom: 8px; }
+.proposal .at-desc { font-size: 12px; color: var(--text2); line-height: 1.65; margin-bottom: 14px; }
+.proposal .at-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.proposal .at-tag { font-size: 10px; color: var(--text2); border: 1px solid var(--border); border-radius: 10px; padding: 2px 8px; }
+.proposal .deliverables { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.proposal .del-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: var(--bg2); border-radius: 8px; }
+.proposal .del-check { color: var(--green); flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+.proposal .del-text { font-size: 13px; color: var(--text2); line-height: 1.5; }
+.proposal .del-text strong { color: var(--text); display: block; margin-bottom: 2px; }
+
+/* INVESTMENT */
+.proposal .inv-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 28px 0; }
+.proposal .inv-c { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 26px 22px; }
+.proposal .inv-c.rec { border: 2px solid var(--fo); }
+.proposal .inv-badge { display: inline-block; font-family: "Roboto Slab", serif; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; background: var(--border); color: var(--text2); padding: 3px 10px; border-radius: 10px; margin-bottom: 14px; }
+.proposal .inv-badge.rec { background: var(--fo); color: #fff; }
+.proposal .inv-name { font-family: "Fjalla One", sans-serif; font-size: 28px; text-transform: uppercase; color: var(--text); margin-bottom: 4px; }
+.proposal .inv-price { font-size: 32px; font-weight: 300; color: var(--text); margin-bottom: 3px; }
+.proposal .inv-price span { font-size: 14px; color: var(--text2); font-weight: 400; }
+.proposal .inv-note { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
+.proposal .inv-stats { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; display: grid; gap: 0; margin: 16px 0; }
+.proposal .inv-stats.rec { border: 1.5px solid var(--fo); }
+.proposal .inv-stat { text-align: center; padding: 0 4px; }
+.proposal .inv-stat + .inv-stat { border-left: 1px solid var(--border); padding-left: 10px; }
+.proposal .inv-stat-num { font-family: "Fjalla One", sans-serif; font-size: 26px; color: var(--fo); line-height: 1; margin-bottom: 2px; }
+.proposal .inv-stat-num.total { color: var(--text); }
+.proposal .inv-stat-label { font-size: 9.5px; color: var(--text2); line-height: 1.4; }
+.proposal .inv-div { border-top: 1px solid var(--border); margin: 14px 0 12px; }
+.proposal .inv-group-label { font-family: "Roboto Slab", serif; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; color: var(--fo); margin: 12px 0 8px; }
+.proposal .inv-group-label:first-of-type { margin-top: 0; }
+.proposal .inv-line { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--text2); padding: 5px 0; border-bottom: .5px solid var(--border); line-height: 1.4; }
+.proposal .inv-line:last-of-type { border-bottom: none; }
+.proposal .inv-line .ck { color: var(--green); flex-shrink: 0; margin-top: 2px; }
+
+/* Add-ons / one-time fees */
+.proposal .addon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 36px; }
+.proposal .addon-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.proposal .addon-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.proposal .addon-desc { font-size: 11px; color: var(--text2); line-height: 1.5; }
+.proposal .addon-price { font-family: "Fjalla One", sans-serif; font-size: 15px; color: var(--fo); white-space: nowrap; flex-shrink: 0; text-align: right; }
+.proposal .addon-price-unit { font-family: "Overpass", sans-serif; font-size: 10px; color: var(--text2); font-weight: 400; display: block; }
+.proposal .onetime-box { background: var(--fd); border-radius: 10px; padding: 24px 28px; margin-bottom: 36px; }
+.proposal .onetime-head { font-family: "Fjalla One", sans-serif; font-size: 16px; text-transform: uppercase; color: #fff; margin-bottom: 16px; }
+.proposal .onetime-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.proposal .onetime-row { display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: .5px solid #2d2535; }
+.proposal .onetime-row:last-child { border-bottom: none; }
+.proposal .onetime-row span:first-child { color: #888; }
+.proposal .onetime-row span:last-child { font-weight: 600; color: var(--fo); }
+
+/* TIMELINE */
+.proposal .tl { margin: 28px 0; }
+.proposal .tl-item { display: flex; gap: 18px; }
+.proposal .tl-l { display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0; }
+.proposal .tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--fo); flex-shrink: 0; margin-top: 4px; }
+.proposal .tl-line-v { flex: 1; width: 1px; background: var(--border); }
+.proposal .tl-item:last-child .tl-line-v { display: none; }
+.proposal .tl-body { padding-bottom: 26px; flex: 1; }
+.proposal .tl-per { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--fo); margin-bottom: 3px; }
+.proposal .tl-title { font-family: "Fjalla One", sans-serif; font-size: 16px; text-transform: uppercase; color: var(--text); margin-bottom: 4px; }
+.proposal .tl-desc { font-size: 13px; color: var(--text2); line-height: 1.65; }
+
+/* NEXT STEPS */
+.proposal .ns-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 28px 0; }
+.proposal .ns-c { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 18px; display: flex; gap: 14px; align-items: flex-start; }
+.proposal .ns-num { font-family: "Fjalla One", sans-serif; font-size: 36px; color: var(--fo); opacity: .35; line-height: 1; flex-shrink: 0; }
+.proposal .ns-body { font-size: 13px; color: var(--text2); line-height: 1.6; }
+.proposal .ns-body strong { display: block; color: var(--text); font-size: 14px; margin-bottom: 3px; }
+
+/* CTA + FOOTER */
+.proposal .cta-block { background: var(--fd); border-radius: 10px; padding: 32px 36px; display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-top: 36px; }
+.proposal .cta-eye  { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .12em; color: var(--fo); margin-bottom: 6px; display: block; }
+.proposal .cta-head { font-family: "Fjalla One", sans-serif; font-size: 28px; text-transform: uppercase; color: #fff; }
+.proposal .cta-sub  { font-size: 12px; color: #555; margin-top: 4px; }
+.proposal .cta-phone { font-family: "Fjalla One", sans-serif; font-size: 26px; color: #fff; text-align: right; }
+.proposal .cta-url  { font-size: 13px; color: var(--fo); text-align: right; }
+.proposal .cta-note { font-size: 11px; color: #444; margin-top: 4px; text-align: right; }
+.proposal .footer { background: #0d0d0d; padding: 36px 56px; display: flex; justify-content: space-between; align-items: center; }
+.proposal .footer-brand { font-family: "Fjalla One", sans-serif; font-size: 22px; text-transform: uppercase; color: #fff; }
+.proposal .footer-brand em { color: var(--fo); font-style: normal; }
+.proposal .footer-sub { font-size: 11px; color: #333; margin-top: 4px; }
+.proposal .footer-r { text-align: right; font-size: 12px; color: #444; line-height: 1.8; }
+.proposal .footer-r a { color: var(--fo); text-decoration: none; }
+
+/* ACCEPT / DECLINE (new — not in the original static HTML) */
+.proposal .accept-block { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 32px 36px; margin-top: 36px; }
+.proposal .accept-head { font-family: "Fjalla One", sans-serif; font-size: 22px; text-transform: uppercase; color: var(--text); margin-bottom: 6px; }
+.proposal .accept-sub { font-size: 13px; color: var(--text2); margin-bottom: 20px; line-height: 1.6; }
+.proposal .accept-field { margin-bottom: 14px; }
+.proposal .accept-field label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--text2); margin-bottom: 6px; }
+.proposal .accept-field input[type="text"] { width: 100%; max-width: 360px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: inherit; }
+.proposal .accept-checkbox { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--text2); margin: 18px 0; line-height: 1.5; }
+.proposal .accept-actions { display: flex; gap: 12px; margin-top: 16px; }
+.proposal .btn-accept { background: var(--fo); color: #fff; border: none; border-radius: 8px; padding: 12px 28px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; cursor: pointer; font-family: inherit; }
+.proposal .btn-accept:disabled { opacity: .5; cursor: default; }
+.proposal .btn-decline { background: transparent; color: var(--text2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 28px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; cursor: pointer; font-family: inherit; }
+.proposal .accept-error { font-size: 12px; color: var(--red); margin-top: 12px; }
+.proposal .accept-status { font-family: "Fjalla One", sans-serif; font-size: 20px; text-transform: uppercase; color: var(--green); }
+.proposal .accept-status.declined { color: var(--red); }
+
+@media (max-width: 700px) {
+  .proposal .cover h1, .proposal .h2, .proposal .h2-lt { font-size: 32px; }
+  .proposal .sec, .proposal .sec-dark, .proposal .sec-mid, .proposal .sec-brand, .proposal .cover { padding: 32px 24px; }
+  .proposal .cover-grid, .proposal .inv-cards, .proposal .cases, .proposal .pillars-grid,
+  .proposal .auth-tiers, .proposal .ns-grid, .proposal .addon-grid, .proposal .onetime-grid,
+  .proposal .layer-items, .proposal .ch-list, .proposal .tiol-items, .proposal .deliverables,
+  .proposal .auth-split { grid-template-columns: 1fr; }
+  .proposal .cta-block { flex-direction: column; align-items: flex-start; }
+  .proposal .cta-phone, .proposal .cta-url, .proposal .cta-note { text-align: left; }
+  .proposal .footer { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .proposal .footer-r { text-align: left; }
+}
