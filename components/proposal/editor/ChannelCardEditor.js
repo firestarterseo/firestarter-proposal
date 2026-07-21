@@ -16,7 +16,7 @@ export default function ChannelCardEditor({ channel, onChange }) {
   return (
     <div className="form-card" style={{ padding: 20, marginBottom: 14 }}>
       <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 12 }}>{channel.title}</div>
-      <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr 1fr", marginBottom: 12 }}>
+      <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", marginBottom: 12 }}>
         <div className="form-field">
           <label>Badge</label>
           <select value={channel.badgeVariant} onChange={(e) => {
@@ -33,23 +33,22 @@ export default function ChannelCardEditor({ channel, onChange }) {
           <label>Badge label</label>
           <input type="text" value={channel.badgeLabel} onChange={(e) => set({ badgeLabel: e.target.value })} />
         </div>
-        <div className="form-field">
-          <label style={{ visibility: "hidden" }}>.</label>
-          <label className="checkbox-field" style={{ margin: 0 }}>
-            <input type="checkbox" checked={channel.headerActive} onChange={(e) => set({ headerActive: e.target.checked })} />
-            Highlight as active channel
-          </label>
-        </div>
+        <label className="checkbox-field form-field-wide" style={{ margin: 0 }}>
+          <input type="checkbox" checked={channel.headerActive} onChange={(e) => set({ headerActive: e.target.checked })} />
+          Highlight as active channel
+        </label>
       </div>
       {channel.rows.map((row, i) => (
-        <div className="form-grid" key={i} style={{ gridTemplateColumns: "2fr 1fr 1fr", marginBottom: 6 }}>
-          <div className="form-field">
-            <input type="text" placeholder="Stat label, e.g. Keywords in top 100" value={row.label} onChange={(e) => setRow(i, { label: e.target.value })} />
-          </div>
-          <div className="form-field">
+        <div key={i} style={{ marginBottom: 10 }}>
+          <input
+            type="text"
+            placeholder="Stat label, e.g. Keywords in top 100"
+            value={row.label}
+            onChange={(e) => setRow(i, { label: e.target.value })}
+            style={{ width: "100%", marginBottom: 6 }}
+          />
+          <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr" }}>
             <input type="text" placeholder="Value, e.g. 1 of 17" value={row.value} onChange={(e) => setRow(i, { value: e.target.value })} />
-          </div>
-          <div className="form-field">
             <select value={row.severity} onChange={(e) => setRow(i, { severity: e.target.value })}>
               <option value="bad">Bad (red)</option>
               <option value="mid">Mid (amber)</option>

@@ -270,14 +270,18 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
           <div className="form-field form-field-wide">
             <label>Keyword ledger</label>
             {form.keywordLedger.map((row, i) => (
-              <div className="form-grid" key={i} style={{ gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr auto", marginBottom: 6, alignItems: "center" }}>
-                <input type="text" placeholder="Keyword" value={row.keyword} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { keyword: e.target.value }))} />
-                <input type="text" placeholder="Rank, e.g. Not ranked" value={row.rankBadge} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { rankBadge: e.target.value }))} />
-                <select value={row.severity} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { severity: e.target.value }))}>
-                  <option value="bad">Bad</option><option value="mid">Mid</option><option value="good">Good</option>
-                </select>
-                <input type="number" placeholder="Searches/mo" value={row.searches} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { searches: e.target.value }))} />
-                <input type="text" placeholder="Priority" value={row.priority} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { priority: e.target.value }))} />
+              <div className="form-card" key={i} style={{ padding: 12, marginBottom: 8 }}>
+                <input type="text" placeholder="Keyword" value={row.keyword} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { keyword: e.target.value }))} style={{ width: "100%", marginBottom: 6 }} />
+                <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", marginBottom: 6 }}>
+                  <input type="text" placeholder="Rank, e.g. Not ranked" value={row.rankBadge} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { rankBadge: e.target.value }))} />
+                  <select value={row.severity} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { severity: e.target.value }))}>
+                    <option value="bad">Bad</option><option value="mid">Mid</option><option value="good">Good</option>
+                  </select>
+                </div>
+                <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", marginBottom: 6 }}>
+                  <input type="number" placeholder="Searches/mo" value={row.searches} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { searches: e.target.value }))} />
+                  <input type="text" placeholder="Priority" value={row.priority} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { priority: e.target.value }))} />
+                </div>
                 <button type="button" className="link-toggle" onClick={() => update("keywordLedger", rowRemove(form.keywordLedger, i))}>Remove</button>
               </div>
             ))}
@@ -307,12 +311,16 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
           <div className="form-field form-field-wide">
             <label>Competitors</label>
             {form.competitors.map((c, i) => (
-              <div className="form-grid" key={i} style={{ gridTemplateColumns: "2fr 1fr 2fr auto auto", marginBottom: 6, alignItems: "center" }}>
-                <input type="text" placeholder="Name" value={c.name} onChange={(e) => update("competitors", rowUpdate(form.competitors, i, { name: e.target.value }))} />
-                <input type="number" placeholder="DR" value={c.dr} onChange={(e) => update("competitors", rowUpdate(form.competitors, i, { dr: e.target.value }))} />
-                <input type="text" placeholder="Stat, e.g. 103 links · 237 domains" value={c.stat} onChange={(e) => update("competitors", rowUpdate(form.competitors, i, { stat: e.target.value }))} />
-                <label className="checkbox-field" style={{ margin: 0 }}><input type="checkbox" checked={!!c.alert} onChange={(e) => update("competitors", rowUpdate(form.competitors, i, { alert: e.target.checked }))} /> Flag</label>
-                <button type="button" className="link-toggle" onClick={() => update("competitors", rowRemove(form.competitors, i))}>Remove</button>
+              <div className="form-card" key={i} style={{ padding: 12, marginBottom: 8 }}>
+                <div className="form-grid" style={{ gridTemplateColumns: "2fr 1fr", marginBottom: 6 }}>
+                  <input type="text" placeholder="Name" value={c.name} onChange={(e) => update("competitors", rowUpdate(form.competitors, i, { name: e.target.value }))} />
+                  <input type="number" placeholder="DR" value={c.dr} onChange={(e) => update("competitors", rowUpdate(form.competitors, i, { dr: e.target.value }))} />
+                </div>
+                <input type="text" placeholder="Stat, e.g. 103 links · 237 domains" value={c.stat} onChange={(e) => update("competitors", rowUpdate(form.competitors, i, { stat: e.target.value }))} style={{ width: "100%", marginBottom: 6 }} />
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <label className="checkbox-field" style={{ margin: 0 }}><input type="checkbox" checked={!!c.alert} onChange={(e) => update("competitors", rowUpdate(form.competitors, i, { alert: e.target.checked }))} /> Flag</label>
+                  <button type="button" className="link-toggle" onClick={() => update("competitors", rowRemove(form.competitors, i))}>Remove</button>
+                </div>
               </div>
             ))}
             <button type="button" className="link-toggle" onClick={() => update("competitors", rowAdd(form.competitors, { name: "", dr: "", stat: "", alert: false, note: "" }))}>+ Add competitor</button>
