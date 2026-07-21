@@ -18,7 +18,7 @@ export default async function DashboardPage() {
   return (
     <div className="page page-wide">
       <div className="brand-bar">
-        <span className="wordmark">FIRESTARTER</span>
+        <img src="/firestarter-logo.webp" alt="Firestarter SEO" className="brand-logo" />
         <span className="brand-tagline">Proposals</span>
         <div className="spacer" />
         <nav>
