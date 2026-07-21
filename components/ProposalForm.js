@@ -208,7 +208,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
     <div className="editor-split">
       <div className="editor-pane">
         <form className="form-card" onSubmit={handleSubmit}>
-          <h2 style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 16 }}>Cover</h2>
+          <h2 className="editor-section-title">Cover</h2>
           <div className="form-grid">
             <div className="form-field form-field-wide">
               <label>Client company name *</label>
@@ -240,7 +240,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
             </div>
           </div>
 
-          <h2 style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: "0.05em", margin: "24px 0 16px" }}>01 — Landscape</h2>
+          <h2 className="editor-section-title">01 — Landscape</h2>
           <div className="form-field form-field-wide">
             <label>Intro text</label>
             <textarea value={form.introText} onChange={(e) => update("introText", e.target.value)} />
@@ -256,17 +256,14 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
             ))}
           </div>
 
-          <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr 1fr" }}>
-            {form.landscapeStats.map((stat, i) => (
-              <div className="form-field" key={i}>
-                <label>Summary stat {i + 1}</label>
-                <input type="text" placeholder="Value, e.g. 1 of 5" value={stat.value} onChange={(e) => update("landscapeStats", rowUpdate(form.landscapeStats, i, { value: e.target.value }))} style={{ marginBottom: 6 }} />
-                <input type="text" placeholder="Label" value={stat.label} onChange={(e) => update("landscapeStats", rowUpdate(form.landscapeStats, i, { label: e.target.value }))} />
-              </div>
-            ))}
-          </div>
+          {form.landscapeStats.map((stat, i) => (
+            <div className="form-grid" style={{ gridTemplateColumns: "1fr 2fr", marginBottom: 8 }} key={i}>
+              <input type="text" placeholder="Value, e.g. 1 of 5" value={stat.value} onChange={(e) => update("landscapeStats", rowUpdate(form.landscapeStats, i, { value: e.target.value }))} />
+              <input type="text" placeholder="Label" value={stat.label} onChange={(e) => update("landscapeStats", rowUpdate(form.landscapeStats, i, { label: e.target.value }))} />
+            </div>
+          ))}
 
-          <h2 style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: "0.05em", margin: "24px 0 16px" }}>02 — Gap Analysis</h2>
+          <h2 className="editor-section-title">02 — Gap Analysis</h2>
           <div className="form-field form-field-wide">
             <label>Keyword ledger</label>
             {form.keywordLedger.map((row, i) => (
@@ -326,7 +323,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
             <button type="button" className="link-toggle" onClick={() => update("competitors", rowAdd(form.competitors, { name: "", dr: "", stat: "", alert: false, note: "" }))}>+ Add competitor</button>
           </div>
 
-          <h2 style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: "0.05em", margin: "24px 0 16px" }}>SOURCE™ &amp; Authority</h2>
+          <h2 className="editor-section-title">SOURCE™ &amp; Authority</h2>
           <div className="form-field form-field-wide">
             <label>What SOURCE™ means for this client (4 bullets)</label>
             {form.sourceCalloutBullets.map((b, i) => (
@@ -341,7 +338,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
             <textarea value={form.authorityPullQuote} onChange={(e) => update("authorityPullQuote", e.target.value)} />
           </div>
 
-          <h2 style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: "0.05em", margin: "24px 0 16px" }}>05 — Timeline</h2>
+          <h2 className="editor-section-title">05 — Timeline</h2>
           {form.timelineStages.map((stage, i) => (
             <div className="form-grid" key={i} style={{ gridTemplateColumns: "1fr 1fr", marginBottom: 8 }}>
               <input type="text" placeholder="Period, e.g. Weeks 1–2" value={stage.period} onChange={(e) => update("timelineStages", rowUpdate(form.timelineStages, i, { period: e.target.value }))} />
@@ -350,7 +347,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
             </div>
           ))}
 
-          <h2 style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: "0.05em", margin: "24px 0 16px" }}>Case studies</h2>
+          <h2 className="editor-section-title">Case studies</h2>
           {caseStudies.map((cs) => (
             <label className="checkbox-field" key={cs.id}>
               <input type="checkbox" checked={form.selectedCaseStudyIds.includes(cs.id)} onChange={() => toggleId("selectedCaseStudyIds", cs.id)} />
@@ -358,7 +355,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
             </label>
           ))}
 
-          <h2 style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: "0.05em", margin: "24px 0 16px" }}>Packages</h2>
+          <h2 className="editor-section-title">Packages</h2>
           {packages.map((p) => (
             <div key={p.id} style={{ marginBottom: 6 }}>
               <label className="checkbox-field" style={{ margin: 0 }}>
@@ -374,7 +371,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
             </div>
           ))}
 
-          <h2 style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: "0.05em", margin: "24px 0 16px" }}>Add-ons &amp; one-time fees</h2>
+          <h2 className="editor-section-title">Add-ons &amp; one-time fees</h2>
           {addons.map((a) => (
             <label className="checkbox-field" key={a.id}>
               <input type="checkbox" checked={form.selectedAddonIds.includes(a.id)} onChange={() => toggleId("selectedAddonIds", a.id)} />

@@ -145,8 +145,13 @@ tbody tr.clickable:hover { background: rgba(242, 127, 48, 0.04); cursor: pointer
 .form-field { display: flex; flex-direction: column; gap: 8px; }
 .form-field-wide { grid-column: 1 / -1; }
 .form-field label {
-  font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted);
+  font-size: 12.5px; font-weight: 600; color: var(--text);
 }
+.editor-section-title {
+  font-size: 15px; font-weight: 700; color: var(--text); margin: 28px 0 14px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.editor-section-title:first-child { margin-top: 0; }
 .form-field input[type="text"],
 .form-field input[type="email"],
 .form-field input[type="number"],
