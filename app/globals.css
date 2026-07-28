@@ -144,17 +144,22 @@ tbody tr.clickable:hover { background: rgba(242, 127, 48, 0.04); cursor: pointer
   border-bottom: 1px solid var(--border);
 }
 .editor-section-title:first-child { margin-top: 0; }
-.form-field input[type="text"],
-.form-field input[type="email"],
-.form-field input[type="number"],
-.form-field input[type="date"],
-.form-field textarea,
-.form-field select {
-  padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit;
-  background: #fff;
+/* Scoped to .form-card (every form/card in the app nests inside one) rather
+   than only .form-field, so an input never falls back to default browser
+   styling just because it wasn't individually wrapped in a .form-field div —
+   that gap was exactly what made some editor rows look unstyled. */
+.form-card input[type="text"],
+.form-card input[type="email"],
+.form-card input[type="number"],
+.form-card input[type="date"],
+.form-card textarea,
+.form-card select {
+  width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px;
+  font-size: 13px; font-family: inherit; background: #fff; color: var(--text);
 }
-.form-field textarea { resize: vertical; min-height: 70px; }
-.form-field input:focus, .form-field textarea:focus, .form-field select:focus { outline: none; border-color: var(--orange); }
+.form-card textarea { resize: vertical; min-height: 70px; }
+.form-card input:focus, .form-card textarea:focus, .form-card select:focus { outline: none; border-color: var(--orange); }
+.form-card select { cursor: pointer; }
 .checkbox-field { display: flex; align-items: center; gap: 10px; font-size: 13px; margin: 20px 0 0; }
 .form-hint { font-size: 11.5px; color: var(--muted); margin: 16px 0 0; line-height: 1.6; }
 .form-field .form-hint { margin: 4px 0 0; }
