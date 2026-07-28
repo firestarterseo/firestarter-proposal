@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "../../lib/supabase/client";
+import { INDUSTRY_CATEGORIES, SERVICE_CATEGORIES } from "../../lib/caseStudyCategories";
 
-const BLANK = { industry_label: "", stat_number: "", stat_label: "", company_note: "", sort_order: 0, active: true };
+const BLANK = { industry_label: "", industry_category: "", service_category: "", stat_number: "", stat_label: "", company_note: "", sort_order: 0, active: true };
 
 export default function CaseStudiesManager() {
   const [items, setItems] = useState([]);
@@ -28,6 +29,8 @@ export default function CaseStudiesManager() {
     setEditingId(item.id);
     setForm({
       industry_label: item.industry_label,
+      industry_category: item.industry_category || "",
+      service_category: item.service_category || "",
       stat_number: item.stat_number,
       stat_label: item.stat_label,
       company_note: item.company_note,
@@ -53,6 +56,8 @@ export default function CaseStudiesManager() {
     const supabase = createClient();
     const payload = {
       industry_label: form.industry_label.trim(),
+      industry_category: form.industry_category,
+      service_category: form.service_category,
       stat_number: form.stat_number.trim(),
       stat_label: form.stat_label.trim(),
       company_note: form.company_note.trim(),
@@ -93,6 +98,20 @@ export default function CaseStudiesManager() {
             <div className="form-field">
               <label>Sort order</label>
               <input type="number" value={form.sort_order} onChange={(e) => setForm((f) => ({ ...f, sort_order: e.target.value }))} />
+            </div>
+            <div className="form-field">
+              <label>Industry category (for filtering)</label>
+              <select value={form.industry_category} onChange={(e) => setForm((f) => ({ ...f, industry_category: e.target.value }))}>
+                <option value="">&mdash;</option>
+                {INDUSTRY_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+            <div className="form-field">
+              <label>Service type (for filtering)</label>
+              <select value={form.service_category} onChange={(e) => setForm((f) => ({ ...f, service_category: e.target.value }))}>
+                <option value="">&mdash;</option>
+                {SERVICE_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
             </div>
             <div className="form-field">
               <label>Stat number</label>

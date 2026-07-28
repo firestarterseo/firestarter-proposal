@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "../../lib/supabase/client";
 
-const BLANK = { name: "", description: "", price_amount: "", price_unit: "/mo", price_note: "", category: "addon", sort_order: 0, active: true };
+const BLANK = { name: "", description: "", price_amount: "", price_unit: "/mo", price_note: "", category: "addon", sort_order: 0, active: true, pricing_options_json: "" };
 
 export default function AddonsManager() {
   const [items, setItems] = useState([]);
@@ -35,6 +35,7 @@ export default function AddonsManager() {
       category: item.category,
       sort_order: item.sort_order,
       active: item.active,
+      pricing_options_json: item.pricing_options ? JSON.stringify(item.pricing_options, null, 2) : "",
     });
   }
 
@@ -52,6 +53,17 @@ export default function AddonsManager() {
   async function save(e) {
     e.preventDefault();
     setError("");
+
+    let pricingOptions = null;
+    if (form.pricing_options_json.trim()) {
+      try {
+        pricingOptions = JSON.parse(form.pricing_options_json);
+      } catch (parseErr) {
+        setError(`Pricing options must be valid JSON: ${parseErr.message}`);
+        return;
+      }
+    }
+
     const supabase = createClient();
     const payload = {
       name: form.name.trim(),
@@ -62,6 +74,7 @@ export default function AddonsManager() {
       category: form.category,
       sort_order: Number(form.sort_order) || 0,
       active: form.active,
+      pricing_options: pricingOptions,
     };
     if (!payload.name || Number.isNaN(payload.price_amount)) {
       setError("Name and a numeric price are required.");
@@ -120,6 +133,16 @@ export default function AddonsManager() {
             <div className="form-field form-field-wide">
               <label>Price note (optional)</label>
               <input type="text" value={form.price_note} onChange={(e) => setForm((f) => ({ ...f, price_note: e.target.value }))} placeholder="e.g. $750 min/mo" />
+            </div>
+            <div className="form-field form-field-wide">
+              <label>Pricing options (optional — JSON array of {"{label, price_amount, price_unit, price_note}"})</label>
+              <textarea
+                value={form.pricing_options_json}
+                onChange={(e) => setForm((f) => ({ ...f, pricing_options_json: e.target.value }))}
+                placeholder={'[\n  {"label": "20% of spend", "price_amount": 20, "price_unit": "% of spend", "price_note": "$750 min/mo"},\n  {"label": "Flat monthly fee", "price_amount": 1500, "price_unit": "/mo", "price_note": ""}\n]'}
+                style={{ fontFamily: "monospace", minHeight: 110 }}
+              />
+              <span className="form-hint">Leave blank for a normal single-price add-on. When filled in, staff pick one option per proposal instead of using the price fields above.</span>
             </div>
           </div>
           <label className="checkbox-field">

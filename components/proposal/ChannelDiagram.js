@@ -73,9 +73,10 @@ export default function ChannelDiagram({ channels, hubLabel }) {
       <line x1="340" y1="293" x2="440" y2="293" stroke="#F48020" strokeWidth="0.8" opacity=".4" />
       <text x="390" y="310" textAnchor="middle" fontFamily="Overpass,sans-serif" fontSize="9" fill="#ffffff" opacity=".45" letterSpacing="1">SEARCH VISIBILITY</text>
 
-      {cards.map((card, i) => (
-        <ChannelCard key={card.key || i} {...CARD_POSITIONS[i]} {...card} />
-      ))}
+      {cards.map((card, i) => {
+        const { key, ...cardProps } = card;
+        return <ChannelCard key={key || i} {...CARD_POSITIONS[i]} {...cardProps} />;
+      })}
     </svg>
   );
 }

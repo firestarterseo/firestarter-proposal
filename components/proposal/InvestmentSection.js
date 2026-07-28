@@ -1,3 +1,5 @@
+import { TIMELINE_DEFAULTS } from "../../lib/proposalMapping";
+
 function formatPrice(amount, unit) {
   const num = Number(amount);
   const formatted = Number.isInteger(num) ? num.toLocaleString("en-US") : num.toFixed(2);
@@ -19,7 +21,7 @@ export default function InvestmentSection({ data }) {
       </p>
 
       <div className="tl">
-        {(data.timelineStages || []).map((stage, i) => (
+        {TIMELINE_DEFAULTS.map((stage, i) => (
           <div className="tl-item" key={i}>
             <div className="tl-l"><div className="tl-dot" /><div className="tl-line-v" /></div>
             <div className="tl-body">

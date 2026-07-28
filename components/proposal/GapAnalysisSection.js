@@ -36,7 +36,7 @@ export default function GapAnalysisSection({ data }) {
           <div className="auth-ours">
             <span className="auth-ours-label">{data.clientCompanyName}</span>
             <div className="auth-ours-dr">DR {data.authorityYourDr}</div>
-            <div className="auth-ours-stat">{data.authorityYourStat}</div>
+            <div className="auth-ours-stat">{data.authorityYourReferringDomains} referring domains</div>
           </div>
           {data.authorityOpenDoorNote && (
             <div className="auth-ours-note">
@@ -50,7 +50,7 @@ export default function GapAnalysisSection({ data }) {
             <div className="auth-comp" key={i}>
               <div className="auth-comp-name">{c.name}</div>
               <div className={`auth-comp-dr${c.alert ? " alert" : ""}`}>DR {c.dr}</div>
-              <div className="auth-comp-stat">{c.stat}</div>
+              <div className="auth-comp-stat">{c.referringDomains} referring domains</div>
               {c.note && <div className="auth-comp-note">&#8593; {c.note}</div>}
             </div>
           ))}
