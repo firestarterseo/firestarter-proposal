@@ -22,7 +22,7 @@ export default async function DashboardPage() {
         <span className="brand-tagline">Proposals</span>
         <div className="spacer" />
         <nav>
-          <a className="brand-link" href="/proposals/new">New proposal</a>
+          <a className="btn-primary inline" href="/proposals/new">+ New Proposal</a>
           <a className="brand-link" href="/catalog">Catalog</a>
           <SignOutButton />
         </nav>
