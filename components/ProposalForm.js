@@ -340,12 +340,15 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
             ))}
           </div>
 
-          {form.landscapeStats.map((stat, i) => (
-            <div className="form-grid" style={{ gridTemplateColumns: "1fr 2fr", marginBottom: 8 }} key={i}>
-              <input type="text" placeholder="Value, e.g. 1 of 5" value={stat.value} onChange={(e) => update("landscapeStats", rowUpdate(form.landscapeStats, i, { value: e.target.value }))} />
-              <input type="text" placeholder="Label" value={stat.label} onChange={(e) => update("landscapeStats", rowUpdate(form.landscapeStats, i, { label: e.target.value }))} />
-            </div>
-          ))}
+          <div className="form-field form-field-wide">
+            <label>Summary stats (3 headline numbers shown below the channel diagram)</label>
+            {form.landscapeStats.map((stat, i) => (
+              <div className="form-grid" style={{ gridTemplateColumns: "1fr 2fr", marginBottom: 8 }} key={i}>
+                <input type="text" placeholder={`Value ${i + 1}, e.g. 1 of 5`} value={stat.value} onChange={(e) => update("landscapeStats", rowUpdate(form.landscapeStats, i, { value: e.target.value }))} />
+                <input type="text" placeholder="Label" value={stat.label} onChange={(e) => update("landscapeStats", rowUpdate(form.landscapeStats, i, { label: e.target.value }))} />
+              </div>
+            ))}
+          </div>
 
           <h2 className="editor-section-title">02 — Gap Analysis</h2>
           <div className="form-field form-field-wide">

@@ -8,11 +8,34 @@ import { CHANNEL_ROW_CONFIG, deriveSeverity } from "../../../lib/proposalMapping
 // labels and input types are fixed per the sales rep's spec — only the
 // value (and, for text rows, the severity) is ever entered per proposal.
 
+// The rep's spec calls for 4 distinct channel states (Invisible, Partial,
+// Active, Not Running) — Partial and Active share the same visual treatment
+// in the rendered diagram (the orange "highlighted" header), so both map to
+// badgeVariant "active" and are told apart only by badgeLabel.
+const STATUS_OPTIONS = [
+  { value: "invisible", label: "Invisible", badgeVariant: "invisible", badgeLabel: "INVISIBLE", headerActive: false },
+  { value: "partial", label: "Partial", badgeVariant: "active", badgeLabel: "PARTIAL", headerActive: true },
+  { value: "active", label: "Active", badgeVariant: "active", badgeLabel: "ACTIVE", headerActive: true },
+  { value: "not_running", label: "Not Running", badgeVariant: "not_running", badgeLabel: "NOT RUNNING", headerActive: false },
+];
+
+function getCurrentStatus(channel) {
+  if (channel.badgeVariant === "active") {
+    return channel.badgeLabel === "ACTIVE" ? "active" : "partial";
+  }
+  return channel.badgeVariant || "invisible";
+}
+
 export default function ChannelCardEditor({ channel, onChange }) {
   const rowConfig = CHANNEL_ROW_CONFIG[channel.key] || [];
+  const currentStatus = getCurrentStatus(channel);
 
   function set(patch) {
     onChange({ ...channel, ...patch });
+  }
+  function setStatus(statusValue) {
+    const opt = STATUS_OPTIONS.find((o) => o.value === statusValue);
+    if (opt) set({ badgeVariant: opt.badgeVariant, badgeLabel: opt.badgeLabel, headerActive: opt.headerActive });
   }
   function setRowValue(i, value) {
     const cfg = rowConfig[i];
@@ -31,27 +54,11 @@ export default function ChannelCardEditor({ channel, onChange }) {
   return (
     <div className="form-card" style={{ padding: 20, marginBottom: 14 }}>
       <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 12 }}>{channel.title}</div>
-      <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", marginBottom: 12 }}>
-        <div className="form-field">
-          <label>Badge</label>
-          <select value={channel.badgeVariant} onChange={(e) => {
-            const variant = e.target.value;
-            const defaults = { active: "PARTIAL", invisible: "INVISIBLE", not_running: "NOT RUNNING" };
-            set({ badgeVariant: variant, badgeLabel: defaults[variant] });
-          }}>
-            <option value="invisible">Invisible</option>
-            <option value="active">Partial / active</option>
-            <option value="not_running">Not running</option>
-          </select>
-        </div>
-        <div className="form-field">
-          <label>Badge label</label>
-          <input type="text" value={channel.badgeLabel} onChange={(e) => set({ badgeLabel: e.target.value })} />
-        </div>
-        <label className="checkbox-field form-field-wide" style={{ margin: 0 }}>
-          <input type="checkbox" checked={channel.headerActive} onChange={(e) => set({ headerActive: e.target.checked })} />
-          Highlight as active channel
-        </label>
+      <div className="form-field" style={{ marginBottom: 12 }}>
+        <label>Status</label>
+        <select value={currentStatus} onChange={(e) => setStatus(e.target.value)}>
+          {STATUS_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
       </div>
       {channel.rows.map((row, i) => {
         const cfg = rowConfig[i] || { label: row.label, fieldType: "text" };
