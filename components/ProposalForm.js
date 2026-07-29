@@ -243,6 +243,9 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
       }
       await supabase.from("proposal_packages").delete().eq("proposal_id", proposalId);
       await supabase.from("proposal_addons").delete().eq("proposal_id", proposalId);
+      const { data: { user } } = await supabase.auth.getUser();
+      const profile = user ? (await supabase.from("profiles").select("display_name").eq("id", user.id).single()).data : null;
+      await supabase.from("proposal_events").insert({ proposal_id: proposalId, event_type: "edited", actor_name: profile?.display_name || null });
     } else {
       const shareToken = generateShareToken();
       const { data, error: insertErr } = await supabase

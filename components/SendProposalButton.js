@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function SendProposalButton({ proposalId, status, clientEmail }) {
+export default function SendProposalButton({ proposalId, status, clientEmail, label, className }) {
   const router = useRouter();
   const [state, setState] = useState("idle");
   const [error, setError] = useState("");
@@ -27,8 +27,8 @@ export default function SendProposalButton({ proposalId, status, clientEmail }) 
 
   return (
     <div style={{ textAlign: "right" }}>
-      <button className="btn-primary inline" onClick={handleSend} disabled={state === "sending"}>
-        {state === "sending" ? "Sending…" : alreadySent ? "Re-send" : "Send to client"}
+      <button className={className || "btn-primary inline"} onClick={handleSend} disabled={state === "sending"}>
+        {state === "sending" ? "Sending…" : label || (alreadySent ? "Re-send" : "Send to client")}
       </button>
       {error && <p className="form-error">{error}</p>}
     </div>

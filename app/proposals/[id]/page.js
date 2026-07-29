@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "../../../lib/supabase/server";
 import { mapProposalRowToDocumentData } from "../../../lib/proposalMapping";
-import { groupProposalEvents, summarizeVisits, formatDuration, describeEngagement } from "../../../lib/proposalEvents";
+import { groupProposalEvents, summarizeVisits, describeEngagement, describeEventGroup } from "../../../lib/proposalEvents";
 import SignOutButton from "../../../components/SignOutButton";
 import ProposalDocument from "../../../components/proposal/ProposalDocument";
 import SendProposalButton from "../../../components/SendProposalButton";
@@ -87,6 +87,21 @@ export default async function ProposalDetailPage({ params }) {
         </div>
       )}
 
+      {proposal.status === "sent" && (
+        <div className="soft-card" style={{ padding: "16px 20px", marginBottom: 20, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, borderLeft: "3px solid var(--orange)" }}>
+          <span style={{ fontSize: 13.5, fontWeight: 600 }}>
+            {(proposal.client_contact_name || "The client")} hasn&rsquo;t viewed the proposal yet.
+          </span>
+          <SendProposalButton proposalId={proposal.id} status={proposal.status} clientEmail={proposal.client_email} label="Send Reminder" />
+        </div>
+      )}
+
+      {proposal.status === "accepted" && (
+        <div className="soft-card" style={{ padding: "16px 20px", marginBottom: 20, borderLeft: "3px solid var(--success)", fontSize: 13.5, fontWeight: 600 }}>
+          Congrats — {proposal.client_company_name} signed the deal.
+        </div>
+      )}
+
       {eventGroups.length > 0 && (
         <div className="soft-card" style={{ padding: "16px 20px", marginBottom: 20 }}>
           <div className="section-label">Activity</div>
@@ -96,14 +111,9 @@ export default async function ProposalDetailPage({ params }) {
           <ul className="audit-list">
             {eventGroups.map((g, i) => (
               <li className="audit-item" key={i}>
-                <span>
-                  <span className="audit-event">{g.eventType}</span>
-                  {g.count > 1 ? ` ×${g.count}` : ""}
-                  {g.actorName ? ` — ${g.actorName}` : ""}
-                </span>
+                <span>{describeEventGroup(g, { contactName: proposal.client_contact_name })}</span>
                 <span className="audit-meta">
                   {fmtDate(g.firstAt)}{g.count > 1 ? `–${fmtTime(g.lastAt)}` : ""}
-                  {formatDuration(g.durationSeconds) ? ` · ${formatDuration(g.durationSeconds)} viewing` : ""}
                 </span>
               </li>
             ))}
