@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "../../../lib/supabase/server";
 import { mapProposalRowToDocumentData } from "../../../lib/proposalMapping";
-import { groupProposalEvents, summarizeVisits, formatDuration } from "../../../lib/proposalEvents";
+import { groupProposalEvents, summarizeVisits, formatDuration, describeEngagement } from "../../../lib/proposalEvents";
 import SignOutButton from "../../../components/SignOutButton";
 import ProposalDocument from "../../../components/proposal/ProposalDocument";
 import SendProposalButton from "../../../components/SendProposalButton";
@@ -46,6 +46,10 @@ export default async function ProposalDetailPage({ params }) {
 
   const eventGroups = groupProposalEvents(events || []);
   const { visitCount, firstVisit, lastActivity, avgDurationSeconds } = summarizeVisits(eventGroups);
+  const engagementSummary = describeEngagement({
+    visitCount, firstVisit, lastActivity, avgDurationSeconds,
+    contactName: proposal.client_contact_name,
+  });
 
   return (
     <div className="page page-wide">
@@ -84,46 +88,27 @@ export default async function ProposalDetailPage({ params }) {
       )}
 
       {eventGroups.length > 0 && (
-        <>
-          <div className="cards" style={{ marginBottom: 20 }}>
-            <div className="card" style={{ flex: "1 1 160px" }}>
-              <div className="num">{visitCount}</div>
-              <div className="label">Client visits</div>
-            </div>
-            <div className="card" style={{ flex: "1 1 160px" }}>
-              <div className="num" style={{ fontSize: 14 }}>{firstVisit ? fmtDate(firstVisit) : "—"}</div>
-              <div className="label">First viewed</div>
-            </div>
-            <div className="card" style={{ flex: "1 1 160px" }}>
-              <div className="num" style={{ fontSize: 14 }}>{lastActivity ? fmtDate(lastActivity) : "—"}</div>
-              <div className="label">Last activity</div>
-            </div>
-            <div className="card" style={{ flex: "1 1 160px" }}>
-              <div className="num">{avgDurationSeconds === null ? "—" : formatDuration(avgDurationSeconds)}</div>
-              <div className="label">Avg. time viewing</div>
-            </div>
-          </div>
-
-          <div className="soft-card" style={{ padding: "16px 20px", marginBottom: 20 }}>
-            <div className="section-label">Activity log</div>
-            <ul className="audit-list">
-              {eventGroups.map((g, i) => (
-                <li className="audit-item" key={i}>
-                  <span>
-                    <span className="audit-event">{g.eventType}</span>
-                    {g.count > 1 ? ` ×${g.count}` : ""}
-                    {g.actorName ? ` — ${g.actorName}` : ""}
-                  </span>
-                  <span className="audit-meta">
-                    {fmtDate(g.firstAt)}{g.count > 1 ? `–${fmtTime(g.lastAt)}` : ""}
-                    {formatDuration(g.durationSeconds) ? ` · ${formatDuration(g.durationSeconds)} viewing` : ""}
-                    {" · "}{[...g.ips].join(", ")}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </>
+        <div className="soft-card" style={{ padding: "16px 20px", marginBottom: 20 }}>
+          <div className="section-label">Activity</div>
+          {engagementSummary && (
+            <p style={{ fontSize: 15, fontWeight: 600, margin: "0 0 16px" }}>{engagementSummary}</p>
+          )}
+          <ul className="audit-list">
+            {eventGroups.map((g, i) => (
+              <li className="audit-item" key={i}>
+                <span>
+                  <span className="audit-event">{g.eventType}</span>
+                  {g.count > 1 ? ` ×${g.count}` : ""}
+                  {g.actorName ? ` — ${g.actorName}` : ""}
+                </span>
+                <span className="audit-meta">
+                  {fmtDate(g.firstAt)}{g.count > 1 ? `–${fmtTime(g.lastAt)}` : ""}
+                  {formatDuration(g.durationSeconds) ? ` · ${formatDuration(g.durationSeconds)} viewing` : ""}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
 
       <div className="preview-pane">
