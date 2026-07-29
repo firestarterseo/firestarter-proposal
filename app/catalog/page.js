@@ -9,6 +9,7 @@ export default function CatalogHomePage() {
         <div className="spacer" />
         <nav>
           <a className="brand-link" href="/">Dashboard</a>
+          <a className="brand-link" href="/playbook">Playbook</a>
           <SignOutButton />
         </nav>
       </div>

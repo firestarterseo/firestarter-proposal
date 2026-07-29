@@ -190,3 +190,25 @@ tbody tr.clickable:hover { background: rgba(242, 127, 48, 0.04); cursor: pointer
   .page { padding: 20px 18px 40px; }
   .form-grid { grid-template-columns: 1fr; }
 }
+
+/* Playbook (internal reference docs, e.g. the SOURCE™ cheat sheet) */
+.playbook-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.playbook-formula-row { display: grid; grid-template-columns: 40px 1fr; gap: 16px; align-items: start; padding: 16px 18px; }
+.playbook-num, .playbook-letter {
+  width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center;
+  font-family: "Arial Narrow", Arial, sans-serif; font-weight: 700; font-size: 16px; flex-shrink: 0;
+}
+.playbook-num { background: var(--grad); color: #fff; }
+.playbook-letter { background: var(--text); color: #fff; }
+.playbook-pillars { font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; color: var(--orange); text-transform: uppercase; margin-bottom: 4px; }
+.playbook-line { display: flex; gap: 12px; padding: 10px 12px; border-radius: 8px; font-size: 13.5px; margin-top: 8px; }
+.playbook-line:first-child { margin-top: 0; }
+.playbook-line .tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; flex-shrink: 0; padding-top: 1px; }
+.playbook-bad { background: #fdeceb; color: #a3312b; }
+.playbook-good { background: #fff4ec; color: #b35d1a; }
+.playbook-do, .playbook-dont { padding: 18px 20px; }
+.playbook-do { background: #fff4ec; }
+.playbook-dont { background: #fdeceb; }
+.playbook-do .playbook-dd-head { color: #b35d1a; }
+.playbook-dont .playbook-dd-head { color: #a3312b; }
+.playbook-dd-head { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
