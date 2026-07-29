@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import { createClient } from "../../../lib/supabase/server";
 import { mapProposalRowToDocumentData } from "../../../lib/proposalMapping";
-import { groupProposalEvents, summarizeVisits, describeEngagement, describeEventGroup } from "../../../lib/proposalEvents";
+import { groupProposalEvents, summarizeVisits, describeEngagement, describeEventGroup, formatRelativeTime } from "../../../lib/proposalEvents";
 import SignOutButton from "../../../components/SignOutButton";
 import ProposalDocument from "../../../components/proposal/ProposalDocument";
 import SendProposalButton from "../../../components/SendProposalButton";
+import Disclosure from "../../../components/Disclosure";
 
 // See app/view/[token]/page.js for why this is needed — Next.js otherwise
 // caches the Supabase fetch() and this page would keep showing stale status.
@@ -13,11 +14,6 @@ export const dynamic = "force-dynamic";
 function fmtDate(iso) {
   if (!iso) return null;
   return new Date(iso).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
-}
-
-function fmtTime(iso) {
-  if (!iso) return null;
-  return new Date(iso).toLocaleString("en-US", { timeStyle: "short" });
 }
 
 export default async function ProposalDetailPage({ params }) {
@@ -108,16 +104,16 @@ export default async function ProposalDetailPage({ params }) {
           {engagementSummary && (
             <p style={{ fontSize: 15, fontWeight: 600, margin: "0 0 16px" }}>{engagementSummary}</p>
           )}
-          <ul className="audit-list">
-            {eventGroups.map((g, i) => (
-              <li className="audit-item" key={i}>
-                <span>{describeEventGroup(g, { contactName: proposal.client_contact_name })}</span>
-                <span className="audit-meta">
-                  {fmtDate(g.firstAt)}{g.count > 1 ? `–${fmtTime(g.lastAt)}` : ""}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <Disclosure label={`Full activity (${eventGroups.length})`} defaultOpen={false}>
+            <ul className="audit-list">
+              {eventGroups.map((g, i) => (
+                <li className="audit-item" key={i}>
+                  <span>{describeEventGroup(g, { contactName: proposal.client_contact_name })}</span>
+                  <span className="audit-meta">{formatRelativeTime(g.lastAt)}</span>
+                </li>
+              ))}
+            </ul>
+          </Disclosure>
         </div>
       )}
 
