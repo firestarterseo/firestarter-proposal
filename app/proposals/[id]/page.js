@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "../../../lib/supabase/server";
 import { mapProposalRowToDocumentData } from "../../../lib/proposalMapping";
-import { groupProposalEvents, summarizeVisits } from "../../../lib/proposalEvents";
+import { groupProposalEvents, summarizeVisits, formatDuration } from "../../../lib/proposalEvents";
 import SignOutButton from "../../../components/SignOutButton";
 import ProposalDocument from "../../../components/proposal/ProposalDocument";
 import SendProposalButton from "../../../components/SendProposalButton";
@@ -45,7 +45,7 @@ export default async function ProposalDetailPage({ params }) {
     : null;
 
   const eventGroups = groupProposalEvents(events || []);
-  const { visitCount, firstVisit, lastActivity } = summarizeVisits(eventGroups);
+  const { visitCount, firstVisit, lastActivity, avgDurationSeconds } = summarizeVisits(eventGroups);
 
   return (
     <div className="page page-wide">
@@ -98,6 +98,10 @@ export default async function ProposalDetailPage({ params }) {
               <div className="num" style={{ fontSize: 14 }}>{lastActivity ? fmtDate(lastActivity) : "—"}</div>
               <div className="label">Last activity</div>
             </div>
+            <div className="card" style={{ flex: "1 1 160px" }}>
+              <div className="num">{avgDurationSeconds === null ? "—" : formatDuration(avgDurationSeconds)}</div>
+              <div className="label">Avg. time viewing</div>
+            </div>
           </div>
 
           <div className="soft-card" style={{ padding: "16px 20px", marginBottom: 20 }}>
@@ -112,6 +116,7 @@ export default async function ProposalDetailPage({ params }) {
                   </span>
                   <span className="audit-meta">
                     {fmtDate(g.firstAt)}{g.count > 1 ? `–${fmtTime(g.lastAt)}` : ""}
+                    {formatDuration(g.durationSeconds) ? ` · ${formatDuration(g.durationSeconds)} viewing` : ""}
                     {" · "}{[...g.ips].join(", ")}
                   </span>
                 </li>

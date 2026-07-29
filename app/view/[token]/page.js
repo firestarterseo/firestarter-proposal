@@ -5,6 +5,7 @@ import { mapProposalRowToDocumentData } from "../../../lib/proposalMapping";
 import { ALLOWED_TRANSITIONS } from "../../../lib/proposalStatus";
 import ProposalDocument from "../../../components/proposal/ProposalDocument";
 import AcceptDeclineForm from "../../../components/proposal/AcceptDeclineForm";
+import ViewDurationTracker from "../../../components/proposal/ViewDurationTracker";
 
 // Next.js's App Router caches fetch() responses by default (including the
 // ones @supabase/supabase-js issues under the hood) — without this, every
@@ -24,6 +25,7 @@ export default async function PublicProposalPage({ params }) {
   if (!proposal) notFound();
 
   const isDecided = proposal.status === "accepted" || proposal.status === "declined";
+  let viewEventId = null;
   if (!isDecided) {
     // Once accepted/declined, the client's own post-action router.refresh()
     // would otherwise immediately re-trigger this same render and log a
@@ -31,7 +33,12 @@ export default async function PublicProposalPage({ params }) {
     const headerList = headers();
     const ip = headerList.get("x-forwarded-for")?.split(",")[0]?.trim() || null;
     const userAgent = headerList.get("user-agent") || null;
-    await supabase.from("proposal_events").insert({ proposal_id: proposal.id, event_type: "viewed", ip_address: ip, user_agent: userAgent });
+    const { data: viewEvent } = await supabase
+      .from("proposal_events")
+      .insert({ proposal_id: proposal.id, event_type: "viewed", ip_address: ip, user_agent: userAgent })
+      .select("id")
+      .single();
+    viewEventId = viewEvent?.id || null;
     if (ALLOWED_TRANSITIONS.view.includes(proposal.status)) {
       await supabase
         .from("proposals")
@@ -52,19 +59,22 @@ export default async function PublicProposalPage({ params }) {
   const data = mapProposalRowToDocumentData(proposal, { packages: packages || [], addons: addons || [], caseStudies: caseStudies || [] });
 
   return (
-    <ProposalDocument
-      data={data}
-      afterNextSteps={
-        !isDecided ? (
-          <AcceptDeclineForm token={params.token} />
-        ) : (
-          <div className="accept-block">
-            <div className={`accept-status${proposal.status === "declined" ? " declined" : ""}`}>
-              {proposal.status === "accepted" ? "Accepted — thank you!" : "Declined"}
+    <>
+      <ProposalDocument
+        data={data}
+        afterNextSteps={
+          !isDecided ? (
+            <AcceptDeclineForm token={params.token} />
+          ) : (
+            <div className="accept-block">
+              <div className={`accept-status${proposal.status === "declined" ? " declined" : ""}`}>
+                {proposal.status === "accepted" ? "Accepted — thank you!" : "Declined"}
+              </div>
             </div>
-          </div>
-        )
-      }
-    />
+          )
+        }
+      />
+      <ViewDurationTracker eventId={viewEventId} />
+    </>
   );
 }
