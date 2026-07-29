@@ -12,8 +12,14 @@ export default async function DashboardPage() {
   const supabase = createClient();
   const { data: proposals } = await supabase
     .from("proposals")
-    .select("id, client_company_name, status, created_at, sent_at, accepted_at")
+    .select("id, client_company_name, status, created_at, sent_at, first_viewed_at, accepted_at, declined_at")
     .order("created_at", { ascending: false });
+
+  const rows = proposals || [];
+  const sentCount = rows.filter((p) => p.sent_at).length;
+  const viewedCount = rows.filter((p) => p.first_viewed_at).length;
+  const acceptedCount = rows.filter((p) => p.status === "accepted").length;
+  const winRate = sentCount ? Math.round((acceptedCount / sentCount) * 100) : null;
 
   return (
     <div className="page page-wide">
@@ -30,7 +36,25 @@ export default async function DashboardPage() {
       </div>
       <h1>Proposals</h1>
       <p className="subtitle">Every proposal your team has created, sent, or closed.</p>
-      <ProposalsTable proposals={proposals || []} />
+      <div className="cards">
+        <div className="card" style={{ flex: "1 1 160px" }}>
+          <div className="num">{sentCount}</div>
+          <div className="label">Sent</div>
+        </div>
+        <div className="card" style={{ flex: "1 1 160px" }}>
+          <div className="num">{viewedCount}</div>
+          <div className="label">Viewed by client</div>
+        </div>
+        <div className="card" style={{ flex: "1 1 160px" }}>
+          <div className="num">{acceptedCount}</div>
+          <div className="label">Signed</div>
+        </div>
+        <div className="card" style={{ flex: "1 1 160px" }}>
+          <div className="num">{winRate === null ? "—" : `${winRate}%`}</div>
+          <div className="label">Win rate</div>
+        </div>
+      </div>
+      <ProposalsTable proposals={rows} />
     </div>
   );
 }
