@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "../../../lib/supabase/server";
 import { mapProposalRowToDocumentData } from "../../../lib/proposalMapping";
+import { groupProposalEvents, summarizeVisits } from "../../../lib/proposalEvents";
 import SignOutButton from "../../../components/SignOutButton";
 import ProposalDocument from "../../../components/proposal/ProposalDocument";
 import SendProposalButton from "../../../components/SendProposalButton";
@@ -12,6 +13,11 @@ export const dynamic = "force-dynamic";
 function fmtDate(iso) {
   if (!iso) return null;
   return new Date(iso).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
+}
+
+function fmtTime(iso) {
+  if (!iso) return null;
+  return new Date(iso).toLocaleString("en-US", { timeStyle: "short" });
 }
 
 export default async function ProposalDetailPage({ params }) {
@@ -37,6 +43,9 @@ export default async function ProposalDetailPage({ params }) {
   const shareUrl = proposal.share_token
     ? `${process.env.NEXT_PUBLIC_APP_URL || ""}/view/${proposal.share_token}`
     : null;
+
+  const eventGroups = groupProposalEvents(events || []);
+  const { visitCount, firstVisit, lastActivity } = summarizeVisits(eventGroups);
 
   return (
     <div className="page page-wide">
@@ -74,21 +83,42 @@ export default async function ProposalDetailPage({ params }) {
         </div>
       )}
 
-      {events && events.length > 0 && (
-        <div className="soft-card" style={{ padding: "16px 20px", marginBottom: 20 }}>
-          <div className="section-label">Audit trail</div>
-          <ul className="audit-list">
-            {events.map((ev) => (
-              <li className="audit-item" key={ev.id}>
-                <span>
-                  <span className="audit-event">{ev.event_type}</span>
-                  {ev.actor_name ? ` — ${ev.actor_name}` : ""}
-                </span>
-                <span className="audit-meta">{fmtDate(ev.created_at)}{ev.ip_address ? ` · ${ev.ip_address}` : ""}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+      {eventGroups.length > 0 && (
+        <>
+          <div className="cards" style={{ marginBottom: 20 }}>
+            <div className="card" style={{ flex: "1 1 160px" }}>
+              <div className="num">{visitCount}</div>
+              <div className="label">Client visits</div>
+            </div>
+            <div className="card" style={{ flex: "1 1 160px" }}>
+              <div className="num" style={{ fontSize: 14 }}>{firstVisit ? fmtDate(firstVisit) : "—"}</div>
+              <div className="label">First viewed</div>
+            </div>
+            <div className="card" style={{ flex: "1 1 160px" }}>
+              <div className="num" style={{ fontSize: 14 }}>{lastActivity ? fmtDate(lastActivity) : "—"}</div>
+              <div className="label">Last activity</div>
+            </div>
+          </div>
+
+          <div className="soft-card" style={{ padding: "16px 20px", marginBottom: 20 }}>
+            <div className="section-label">Activity log</div>
+            <ul className="audit-list">
+              {eventGroups.map((g, i) => (
+                <li className="audit-item" key={i}>
+                  <span>
+                    <span className="audit-event">{g.eventType}</span>
+                    {g.count > 1 ? ` ×${g.count}` : ""}
+                    {g.actorName ? ` — ${g.actorName}` : ""}
+                  </span>
+                  <span className="audit-meta">
+                    {fmtDate(g.firstAt)}{g.count > 1 ? `–${fmtTime(g.lastAt)}` : ""}
+                    {" · "}{[...g.ips].join(", ")}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
       )}
 
       <div className="preview-pane">
