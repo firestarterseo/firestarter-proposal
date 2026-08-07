@@ -8,7 +8,7 @@ export default function NextStepsSection() {
       <h2 className="h2">Ready to<br /><em>Get Started?</em></h2>
       <p className="intro">Here&rsquo;s exactly what happens the moment you say go.</p>
       <div className="ns-grid">
-        <div className="ns-c"><div className="ns-num">1</div><div className="ns-body"><strong>Sign the agreement</strong>Review the service agreement and sign digitally. 9-month initial term with 45-day written notice to cancel &mdash; no penalties, no traps.</div></div>
+        <div className="ns-c"><div className="ns-num">1</div><div className="ns-body"><strong>Sign the agreement</strong>Review the service agreement and sign digitally. 12-month initial term with 45-day written notice to cancel &mdash; no penalties, no traps.</div></div>
         <div className="ns-c"><div className="ns-num">2</div><div className="ns-body"><strong>Onboarding checklist sent</strong>Website access, Google Analytics, Google Business Profile. Takes about 15 minutes. We handle the rest.</div></div>
         <div className="ns-c"><div className="ns-num">3</div><div className="ns-body"><strong>Keyword map in two weeks</strong>Your complete discovery architecture delivered for review. Quick approval from you and the strategy is locked.</div></div>
         <div className="ns-c"><div className="ns-num">4</div><div className="ns-body"><strong>Full campaign live in 30 days</strong>First optimizations live, technical remediation underway, first citations submitted.</div></div>

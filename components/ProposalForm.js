@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "../lib/supabase/client";
-import { CHANNEL_DEFAULTS, buildLandscapeCopy } from "../lib/proposalMapping";
+import { CHANNEL_DEFAULTS, buildLandscapeCopy, computeAgreementFinancials } from "../lib/proposalMapping";
 import { INDUSTRY_CATEGORIES, SERVICE_CATEGORIES } from "../lib/caseStudyCategories";
 import { generateShareToken } from "../lib/tokens";
 import ChannelCardEditor from "./proposal/editor/ChannelCardEditor";
@@ -11,7 +11,7 @@ import ProposalDocument from "./proposal/ProposalDocument";
 
 function blankForm() {
   return {
-    clientCompanyName: "", clientContactName: "", clientEmail: "", preparedBy: "",
+    clientCompanyName: "", clientContactName: "", clientAddress: "", clientEmail: "", preparedBy: "",
     servicesSummary: "", subtitle: "", heroEmphasisWord: "",
     industryLabel: "", targetCustomerLabel: "", targetKeywordExample: "",
     channelCards: CHANNEL_DEFAULTS.map((c) => ({ ...c, rows: c.rows.map((r) => ({ ...r })) })),
@@ -78,6 +78,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
       ? {
           clientCompanyName: initialProposal.client_company_name || "",
           clientContactName: initialProposal.client_contact_name || "",
+          clientAddress: initialProposal.client_address || "",
           clientEmail: initialProposal.client_email || "",
           preparedBy: initialProposal.prepared_by || "",
           servicesSummary: initialProposal.services_summary || "",
@@ -190,8 +191,13 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
       .filter((cs) => form.selectedCaseStudyIds.includes(cs.id))
       .map((cs) => ({ industryLabel: cs.industry_label, statNumber: cs.stat_number, statLabel: cs.stat_label, companyNote: cs.company_note }));
 
-    return { ...form, introText, landscapePullQuote, packages: selectedPackages, addons: selectedAddons, caseStudies: selectedCaseStudies };
-  }, [form, packages, addons, caseStudies, addonSelectedOptions, addonPriceOverrides]);
+    return {
+      ...form, introText, landscapePullQuote,
+      packages: selectedPackages, addons: selectedAddons, caseStudies: selectedCaseStudies,
+      acceptedAt: initialProposal?.accepted_at || null,
+      agreementFinancials: computeAgreementFinancials(selectedPackages, selectedAddons),
+    };
+  }, [form, packages, addons, caseStudies, addonSelectedOptions, addonPriceOverrides, initialProposal]);
 
   const visibleCaseStudies = caseStudies.filter((cs) =>
     form.selectedCaseStudyIds.includes(cs.id) ||
@@ -212,6 +218,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
     const payload = {
       client_company_name: form.clientCompanyName.trim(),
       client_contact_name: form.clientContactName.trim(),
+      client_address: form.clientAddress.trim(),
       client_email: form.clientEmail.trim(),
       prepared_by: form.preparedBy.trim(),
       services_summary: form.servicesSummary.trim(),
@@ -298,6 +305,10 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
             <div className="form-field">
               <label>Client contact name</label>
               <input type="text" value={form.clientContactName} onChange={(e) => update("clientContactName", e.target.value)} />
+            </div>
+            <div className="form-field form-field-wide">
+              <label>Client address</label>
+              <input type="text" value={form.clientAddress} onChange={(e) => update("clientAddress", e.target.value)} placeholder="Used in the service agreement — optional" />
             </div>
             <div className="form-field">
               <label>Client email *</label>

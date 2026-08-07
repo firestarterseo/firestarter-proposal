@@ -7,6 +7,7 @@ import SourceSection from "./SourceSection";
 import AuthoritySection from "./AuthoritySection";
 import InvestmentSection from "./InvestmentSection";
 import NextStepsSection from "./NextStepsSection";
+import ServiceAgreementSection from "./ServiceAgreementSection";
 import Footer from "./Footer";
 
 // Single source of truth for the proposal's visual output — used by both the
@@ -24,6 +25,7 @@ export default function ProposalDocument({ data, afterNextSteps }) {
       <AuthoritySection data={data} />
       <InvestmentSection data={data} />
       <NextStepsSection />
+      <ServiceAgreementSection data={data} />
       {afterNextSteps}
       <Footer />
     </div>

@@ -32,6 +32,14 @@
 .proposal .sec-mid   { padding: 56px; border-bottom: 1px solid var(--border); background: var(--bg2); }
 .proposal .sec-brand { padding: 56px; border-bottom: 1px solid #2d2535; background: var(--fd); }
 
+/* SERVICE AGREEMENT */
+.proposal .sa-open p { font-size: 13px; line-height: 1.8; color: var(--text2); margin-bottom: 18px; max-width: 720px; }
+.proposal .sa-clause { margin-bottom: 26px; }
+.proposal .sa-clause-h { font-family: "Roboto Slab", serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text); margin-bottom: 8px; }
+.proposal .sa-clause p { font-size: 13px; line-height: 1.8; color: var(--text2); max-width: 720px; margin-bottom: 12px; }
+.proposal .sa-clause p:last-child { margin-bottom: 0; }
+.proposal .sa-callout { font-size: 12.5px; font-weight: 700; color: var(--text); text-transform: uppercase; line-height: 1.7; margin: 30px 0; max-width: 720px; }
+
 /* PULL QUOTE */
 .proposal .pq    { border-left: 4px solid var(--fo); padding: 16px 22px; background: var(--bg2); border-radius: 0 8px 8px 0; margin: 28px 0; font-size: 14px; color: var(--text2); line-height: 1.75; }
 .proposal .pq strong { color: var(--text); }
