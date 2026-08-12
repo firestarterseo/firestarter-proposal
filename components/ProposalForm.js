@@ -37,6 +37,21 @@ function rowUpdate(list, i, patch) {
 function rowRemove(list, i) {
   return list.filter((_, idx) => idx !== i);
 }
+function rowMove(list, i, delta) {
+  const j = i + delta;
+  if (j < 0 || j >= list.length) return list;
+  const copy = [...list];
+  const [item] = copy.splice(i, 1);
+  copy.splice(j, 0, item);
+  return copy;
+}
+function rowMoveToTop(list, i) {
+  if (i === 0) return list;
+  const copy = [...list];
+  const [item] = copy.splice(i, 1);
+  copy.unshift(item);
+  return copy;
+}
 
 // A catalog add-on's actual name/price/unit/note for this proposal, after
 // applying a chosen pricing_options variant (e.g. Google Ads Management's
@@ -180,6 +195,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
         isRecommended: p.id === form.recommendedPackageId,
         statCallouts: p.stat_callouts || [],
         featureGroups: (p.feature_groups || []).map((g) => ({ groupLabel: g.group_label, items: g.items })),
+        monthlyDeliverables: p.monthly_deliverables || [],
       }));
     const selectedAddons = addons
       .filter((a) => form.selectedAddonIds.includes(a.id))
@@ -273,7 +289,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
       .map((p, i) => ({
         proposal_id: proposalId, package_id: p.id, is_recommended: p.id === form.recommendedPackageId, sort_order: i,
         name: p.name, monthly_price: p.monthly_price, tagline: p.tagline, badge_label: p.badge_label,
-        stat_callouts: p.stat_callouts, feature_groups: p.feature_groups,
+        stat_callouts: p.stat_callouts, feature_groups: p.feature_groups, monthly_deliverables: p.monthly_deliverables,
       }));
     const addonRows = addons
       .filter((a) => form.selectedAddonIds.includes(a.id))
@@ -376,21 +392,22 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
             <button type="button" className="link-toggle" style={{ marginTop: 6 }} onClick={parseKeywordPaste}>Parse &amp; add rows</button>
           </div>
           <div className="form-field form-field-wide">
-            <label>Keyword ledger</label>
+            <label>Keyword ledger — renders in this order, use the arrows to reorder ({form.keywordLedger.length})</label>
             {form.keywordLedger.map((row, i) => (
-              <div className="form-card" key={i} style={{ padding: 12, marginBottom: 8 }}>
-                <input type="text" placeholder="Keyword" value={row.keyword} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { keyword: e.target.value }))} style={{ width: "100%", marginBottom: 6 }} />
-                <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", marginBottom: 6 }}>
-                  <input type="text" placeholder="Rank, e.g. Not ranked" value={row.rankBadge} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { rankBadge: e.target.value }))} />
-                  <select value={row.severity} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { severity: e.target.value }))}>
-                    <option value="bad">Bad</option><option value="mid">Mid</option><option value="good">Good</option>
-                  </select>
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "2fr 110px 90px 110px 90px auto", gap: 6, alignItems: "center", marginBottom: 6 }}>
+                <input type="text" placeholder="Keyword" value={row.keyword} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { keyword: e.target.value }))} />
+                <input type="text" placeholder="Rank" value={row.rankBadge} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { rankBadge: e.target.value }))} />
+                <select value={row.severity} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { severity: e.target.value }))}>
+                  <option value="bad">Bad</option><option value="mid">Mid</option><option value="good">Good</option>
+                </select>
+                <input type="number" placeholder="Searches/mo" value={row.searches} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { searches: e.target.value }))} />
+                <input type="text" placeholder="Priority" value={row.priority} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { priority: e.target.value }))} />
+                <div style={{ display: "flex", gap: 2, whiteSpace: "nowrap" }}>
+                  <button type="button" className="link-toggle" title="Move to top" disabled={i === 0} onClick={() => update("keywordLedger", rowMoveToTop(form.keywordLedger, i))}>Top</button>
+                  <button type="button" className="link-toggle" title="Move up" disabled={i === 0} onClick={() => update("keywordLedger", rowMove(form.keywordLedger, i, -1))}>&uarr;</button>
+                  <button type="button" className="link-toggle" title="Move down" disabled={i === form.keywordLedger.length - 1} onClick={() => update("keywordLedger", rowMove(form.keywordLedger, i, 1))}>&darr;</button>
+                  <button type="button" className="link-toggle" title="Remove" onClick={() => update("keywordLedger", rowRemove(form.keywordLedger, i))}>Remove</button>
                 </div>
-                <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", marginBottom: 6 }}>
-                  <input type="number" placeholder="Searches/mo" value={row.searches} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { searches: e.target.value }))} />
-                  <input type="text" placeholder="Priority" value={row.priority} onChange={(e) => update("keywordLedger", rowUpdate(form.keywordLedger, i, { priority: e.target.value }))} />
-                </div>
-                <button type="button" className="link-toggle" onClick={() => update("keywordLedger", rowRemove(form.keywordLedger, i))}>Remove</button>
               </div>
             ))}
             <button type="button" className="link-toggle" onClick={() => update("keywordLedger", rowAdd(form.keywordLedger, { keyword: "", rankBadge: "Not ranked", severity: "bad", searches: "", priority: "" }))}>+ Add keyword</button>

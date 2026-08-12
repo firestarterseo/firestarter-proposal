@@ -1,7 +1,14 @@
-// Authority tier/deliverable copy is fixed agency-wide content. Only the
-// pull-quote ("why this matters for [client]") is per-proposal.
+// Authority tier copy is fixed agency-wide content. The pull-quote ("why
+// this matters for [client]") and the Monthly Deliverables list are the two
+// per-proposal parts — deliverables come from whichever package is
+// recommended (or the only one, if just one is selected), so this section
+// never shows numbers that don't match what's actually being sold.
 
 export default function AuthoritySection({ data }) {
+  const packages = data.packages || [];
+  const recommendedPackage = packages.find((p) => p.isRecommended) || packages[0];
+  const monthlyDeliverables = recommendedPackage?.monthlyDeliverables || [];
+
   return (
     <div className="sec-mid">
       <span className="eye">04 &mdash; Authority Building</span>
@@ -34,13 +41,19 @@ export default function AuthoritySection({ data }) {
       {data.authorityPullQuote && (
         <div className="pq" dangerouslySetInnerHTML={{ __html: data.authorityPullQuote }} />
       )}
-      <span className="sec-label" style={{ marginTop: 32 }}>Monthly Deliverables &mdash; What You Actually Get</span>
-      <div className="deliverables">
-        <div className="del-item"><div className="del-check">&#10003;</div><div className="del-text"><strong>6 Guest Post / AI Citation Placements / mo</strong>High-authority links + AI brand mentions combined</div></div>
-        <div className="del-item"><div className="del-check">&#10003;</div><div className="del-text"><strong>70 NAP Citations / year</strong>Consistent business info across every major directory</div></div>
-        <div className="del-item"><div className="del-check">&#10003;</div><div className="del-text"><strong>6 Pillar Content Pieces / year</strong>Long-form resources that build topical authority for AI citation</div></div>
-        <div className="del-item"><div className="del-check">&#10003;</div><div className="del-text"><strong>3 Optimized Pages / month</strong>Bringing key service pages up to a 95 optimization score</div></div>
-      </div>
+      {monthlyDeliverables.length > 0 && (
+        <>
+          <span className="sec-label" style={{ marginTop: 32 }}>Monthly Deliverables &mdash; What You Actually Get</span>
+          <div className="deliverables">
+            {monthlyDeliverables.map((d, i) => (
+              <div className="del-item" key={i}>
+                <div className="del-check">&#10003;</div>
+                <div className="del-text"><strong>{d.title}</strong>{d.description}</div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

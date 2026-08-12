@@ -5,7 +5,7 @@ import { createClient } from "../../lib/supabase/client";
 
 const BLANK = {
   name: "", monthly_price: "", tagline: "", badge_label: "", sort_order: 0, active: true,
-  stat_callouts_json: "[]", feature_groups_json: "[]",
+  stat_callouts_json: "[]", feature_groups_json: "[]", monthly_deliverables_json: "[]",
 };
 
 export default function PackagesManager() {
@@ -38,6 +38,7 @@ export default function PackagesManager() {
       active: item.active,
       stat_callouts_json: JSON.stringify(item.stat_callouts || [], null, 2),
       feature_groups_json: JSON.stringify(item.feature_groups || [], null, 2),
+      monthly_deliverables_json: JSON.stringify(item.monthly_deliverables || [], null, 2),
     });
     setError("");
   }
@@ -49,6 +50,7 @@ export default function PackagesManager() {
       sort_order: items.length,
       stat_callouts_json: '[\n  {"value": "2", "label": "High-DR Link Inserts"}\n]',
       feature_groups_json: '[\n  {"group_label": "Foundation", "items": ["Technical SEO & site health monitoring"]}\n]',
+      monthly_deliverables_json: '[\n  {"title": "6 Guest Post / AI Citation Placements / mo", "description": "High-authority links + AI brand mentions combined"}\n]',
     });
     setError("");
   }
@@ -63,12 +65,13 @@ export default function PackagesManager() {
     e.preventDefault();
     setError("");
 
-    let statCallouts, featureGroups;
+    let statCallouts, featureGroups, monthlyDeliverables;
     try {
       statCallouts = JSON.parse(form.stat_callouts_json);
       featureGroups = JSON.parse(form.feature_groups_json);
+      monthlyDeliverables = JSON.parse(form.monthly_deliverables_json);
     } catch (parseErr) {
-      setError(`Stat callouts / feature groups must be valid JSON: ${parseErr.message}`);
+      setError(`Stat callouts / feature groups / monthly deliverables must be valid JSON: ${parseErr.message}`);
       return;
     }
 
@@ -82,6 +85,7 @@ export default function PackagesManager() {
       active: form.active,
       stat_callouts: statCallouts,
       feature_groups: featureGroups,
+      monthly_deliverables: monthlyDeliverables,
     };
     if (!payload.name || Number.isNaN(payload.monthly_price)) {
       setError("Name and a numeric monthly price are required.");
@@ -146,6 +150,15 @@ export default function PackagesManager() {
                 onChange={(e) => setForm((f) => ({ ...f, feature_groups_json: e.target.value }))}
                 style={{ fontFamily: "monospace", minHeight: 160 }}
               />
+            </div>
+            <div className="form-field form-field-wide">
+              <label>Monthly deliverables (JSON array of {"{title, description}"})</label>
+              <textarea
+                value={form.monthly_deliverables_json}
+                onChange={(e) => setForm((f) => ({ ...f, monthly_deliverables_json: e.target.value }))}
+                style={{ fontFamily: "monospace", minHeight: 130 }}
+              />
+              <span className="form-hint">Powers the "Monthly Deliverables" block in the proposal — shows whichever package is recommended, so keep these accurate per tier.</span>
             </div>
           </div>
           <label className="checkbox-field">

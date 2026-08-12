@@ -168,6 +168,7 @@ tbody tr.clickable:hover { background: rgba(242, 127, 48, 0.04); cursor: pointer
   background: none; border: none; padding: 0; font-size: 11px; font-weight: 600;
   color: var(--orange); cursor: pointer; text-align: left; text-decoration: underline; font-family: inherit;
 }
+.link-toggle:disabled { opacity: 0.35; cursor: default; text-decoration: none; }
 .form-actions { display: flex; gap: 12px; margin-top: 28px; }
 .btn-secondary {
   background: #f1f0ec; color: var(--text); border: none; border-radius: 8px; padding: 11px 24px;
