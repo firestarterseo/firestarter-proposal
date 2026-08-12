@@ -80,14 +80,18 @@ export default function StrategySection({ data }) {
         <>
           <span className="sec-label-lt" style={{ marginTop: 28 }}>Comparable Clients &mdash; What This Produces</span>
           <div className="cases">
-            {data.caseStudies.map((cs, i) => (
-              <div className="case-c" key={i}>
-                <div className="case-ind">{cs.industryLabel}</div>
-                <div className="case-num">{cs.statNumber}</div>
-                <div className="case-lbl">{cs.statLabel}</div>
-                <div className="case-co">{cs.companyNote}</div>
-              </div>
-            ))}
+            {data.caseStudies.map((cs, i) => {
+              const CardTag = cs.url ? "a" : "div";
+              const linkProps = cs.url ? { href: cs.url, target: "_blank", rel: "noreferrer" } : {};
+              return (
+                <CardTag className={`case-c${cs.url ? " case-c-link" : ""}`} key={i} {...linkProps}>
+                  <div className="case-ind">{cs.industryLabel}</div>
+                  <div className="case-num">{cs.statNumber}</div>
+                  <div className="case-lbl">{cs.statLabel}</div>
+                  <div className="case-co">{cs.companyNote}</div>
+                </CardTag>
+              );
+            })}
           </div>
           <div style={{ fontSize: 11, color: "#444", marginTop: 4 }}>Full case studies at firestarterseo.com/case-studies</div>
         </>

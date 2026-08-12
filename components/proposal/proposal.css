@@ -124,7 +124,9 @@
 
 /* CASE STUDIES */
 .proposal .cases { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 28px 0; }
-.proposal .case-c { background: #1a1a1a; border: 1px solid #252525; border-radius: 10px; padding: 20px 18px; }
+.proposal .case-c { background: #1a1a1a; border: 1px solid #252525; border-radius: 10px; padding: 20px 18px; display: block; }
+.proposal .case-c-link { transition: border-color 0.15s, transform 0.15s; }
+.proposal .case-c-link:hover { border-color: var(--fo); transform: translateY(-1px); }
 .proposal .case-ind { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--fo); margin-bottom: 12px; }
 .proposal .case-num { font-family: "Fjalla One", sans-serif; font-size: 44px; color: #fff; line-height: 1; margin-bottom: 4px; }
 .proposal .case-lbl { font-size: 12px; color: #666; line-height: 1.4; margin-bottom: 12px; }

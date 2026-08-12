@@ -205,7 +205,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
       });
     const selectedCaseStudies = caseStudies
       .filter((cs) => form.selectedCaseStudyIds.includes(cs.id))
-      .map((cs) => ({ industryLabel: cs.industry_label, statNumber: cs.stat_number, statLabel: cs.stat_label, companyNote: cs.company_note }));
+      .map((cs) => ({ industryLabel: cs.industry_label, statNumber: cs.stat_number, statLabel: cs.stat_label, companyNote: cs.company_note, url: cs.case_study_url }));
 
     return {
       ...form, introText, landscapePullQuote,

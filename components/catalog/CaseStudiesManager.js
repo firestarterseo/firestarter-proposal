@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "../../lib/supabase/client";
 import { INDUSTRY_CATEGORIES, SERVICE_CATEGORIES } from "../../lib/caseStudyCategories";
 
-const BLANK = { industry_label: "", industry_category: "", service_category: "", stat_number: "", stat_label: "", company_note: "", sort_order: 0, active: true };
+const BLANK = { industry_label: "", industry_category: "", service_category: "", stat_number: "", stat_label: "", company_note: "", case_study_url: "", sort_order: 0, active: true };
 
 export default function CaseStudiesManager() {
   const [items, setItems] = useState([]);
@@ -34,6 +34,7 @@ export default function CaseStudiesManager() {
       stat_number: item.stat_number,
       stat_label: item.stat_label,
       company_note: item.company_note,
+      case_study_url: item.case_study_url || "",
       sort_order: item.sort_order,
       active: item.active,
     });
@@ -61,6 +62,7 @@ export default function CaseStudiesManager() {
       stat_number: form.stat_number.trim(),
       stat_label: form.stat_label.trim(),
       company_note: form.company_note.trim(),
+      case_study_url: form.case_study_url.trim(),
       sort_order: Number(form.sort_order) || 0,
       active: form.active,
     };
@@ -124,6 +126,11 @@ export default function CaseStudiesManager() {
             <div className="form-field form-field-wide">
               <label>Company note</label>
               <input type="text" value={form.company_note} onChange={(e) => setForm((f) => ({ ...f, company_note: e.target.value }))} placeholder="e.g. JDI Windows · $1.9M revenue increase" />
+            </div>
+            <div className="form-field form-field-wide">
+              <label>Case study URL (optional)</label>
+              <input type="text" value={form.case_study_url} onChange={(e) => setForm((f) => ({ ...f, case_study_url: e.target.value }))} placeholder="e.g. https://firestarterseo.com/case-studies/jdi-windows" />
+              <span className="form-hint">When set, the case study card in the proposal links out to this page.</span>
             </div>
           </div>
           <label className="checkbox-field">
