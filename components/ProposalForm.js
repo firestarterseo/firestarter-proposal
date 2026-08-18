@@ -84,7 +84,7 @@ function getEffectiveAddonFields(addon, selectedOptions, priceOverrides) {
   return fields;
 }
 
-export default function ProposalForm({ initialProposal, initialPackageIds, initialAddonIds, initialRecommendedPackageId }) {
+export default function ProposalForm({ initialProposal, initialPackageIds, initialAddonIds, initialRecommendedPackageId, initialAddonRows }) {
   const router = useRouter();
   const isEdit = Boolean(initialProposal);
 
@@ -127,18 +127,42 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
   const [keywordPasteText, setKeywordPasteText] = useState("");
   const [csIndustryFilter, setCsIndustryFilter] = useState("");
   const [csServiceFilter, setCsServiceFilter] = useState("");
-  // Note: when editing an existing proposal, any previously-chosen add-on
-  // pricing option or price override isn't pre-filled here (only which
-  // add-ons were selected is) — re-enter it if you're editing a proposal
-  // that had one. Selecting the same option/leaving the price blank falls
-  // back to the catalog default either way.
+  // When editing an existing proposal, any previously-chosen add-on pricing
+  // option or price override is restored below once the add-on catalog has
+  // loaded (see the addon_items fetch), by comparing the saved
+  // proposal_addons snapshot (name + price_amount) back against the current
+  // catalog defaults.
   const [addonSelectedOptions, setAddonSelectedOptions] = useState({});
   const [addonPriceOverrides, setAddonPriceOverrides] = useState({});
 
   useEffect(() => {
     const supabase = createClient();
     supabase.from("service_packages").select("*").eq("active", true).order("sort_order").then(({ data }) => setPackages(data || []));
-    supabase.from("addon_items").select("*").eq("active", true).order("category").order("sort_order").then(({ data }) => setAddons(data || []));
+    supabase.from("addon_items").select("*").eq("active", true).order("category").order("sort_order").then(({ data }) => {
+      setAddons(data || []);
+      if (isEdit && initialAddonRows?.length) {
+        const options = {};
+        const overrides = {};
+        (data || []).forEach((a) => {
+          const saved = initialAddonRows.find((r) => r.addon_id === a.id);
+          if (!saved) return;
+          // Always restore the exact price this proposal was saved with —
+          // even when it happens to match the current catalog default —
+          // so the field never silently reverts to blank/placeholder on
+          // reload. The catalog default can also drift after a proposal is
+          // saved, so falling back to "only show it if it differs" would
+          // mean re-opening an old proposal could show today's price
+          // instead of the one the client actually agreed to.
+          overrides[a.id] = String(saved.price_amount);
+          if (a.pricing_options?.length) {
+            const idx = a.pricing_options.findIndex((opt) => `${a.name} — ${opt.label}` === saved.name);
+            if (idx >= 0) options[a.id] = idx;
+          }
+        });
+        if (Object.keys(options).length) setAddonSelectedOptions((s) => ({ ...s, ...options }));
+        if (Object.keys(overrides).length) setAddonPriceOverrides((s) => ({ ...s, ...overrides }));
+      }
+    });
     supabase.from("case_studies").select("*").eq("active", true).order("sort_order").then(({ data }) => setCaseStudies(data || []));
     if (!isEdit) {
       supabase.auth.getUser().then(async ({ data: { user } }) => {

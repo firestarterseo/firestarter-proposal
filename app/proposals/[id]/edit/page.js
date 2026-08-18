@@ -12,7 +12,7 @@ export default async function EditProposalPage({ params }) {
   if (!proposal) notFound();
 
   const { data: packageRows } = await supabase.from("proposal_packages").select("package_id, is_recommended").eq("proposal_id", proposal.id);
-  const { data: addonRows } = await supabase.from("proposal_addons").select("addon_id").eq("proposal_id", proposal.id);
+  const { data: addonRows } = await supabase.from("proposal_addons").select("addon_id, name, price_amount").eq("proposal_id", proposal.id);
 
   const initialPackageIds = (packageRows || []).map((r) => r.package_id).filter(Boolean);
   const initialRecommendedPackageId = (packageRows || []).find((r) => r.is_recommended)?.package_id || "";
@@ -36,6 +36,7 @@ export default async function EditProposalPage({ params }) {
         initialPackageIds={initialPackageIds}
         initialRecommendedPackageId={initialRecommendedPackageId}
         initialAddonIds={initialAddonIds}
+        initialAddonRows={addonRows || []}
       />
     </div>
   );
