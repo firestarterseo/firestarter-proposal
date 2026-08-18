@@ -227,6 +227,16 @@
 .proposal .onetime-row span:first-child { color: #888; }
 .proposal .onetime-row span:last-child { font-weight: 600; color: var(--fo); }
 
+/* LINE-ITEM INVESTMENT (General SOW / PPC-only / Website) */
+.proposal .li-table-wrap { margin-bottom: 28px; }
+.proposal .li-table-title { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--text2); margin-bottom: 12px; }
+.proposal .li-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.proposal .li-table th { text-align: left; font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--text2); padding: 0 0 10px; border-bottom: 2px solid var(--border); }
+.proposal .li-table td { padding: 10px 0; border-bottom: 1px solid var(--border); color: var(--text); }
+.proposal .li-table tfoot td { border-bottom: none; border-top: 2px solid var(--border); font-weight: 700; padding-top: 12px; }
+.proposal .li-col-desc { text-align: left; }
+.proposal .li-col-num { text-align: right; white-space: nowrap; padding-left: 16px; }
+
 /* TIMELINE */
 .proposal .tl { margin: 28px 0; }
 .proposal .tl-item { display: flex; gap: 18px; }

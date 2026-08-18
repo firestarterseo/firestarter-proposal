@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "../lib/supabase/client";
-import { CHANNEL_DEFAULTS, buildLandscapeCopy, computeAgreementFinancials } from "../lib/proposalMapping";
+import { CHANNEL_DEFAULTS, buildLandscapeCopy, computeAgreementFinancials, computeLineItemFinancials } from "../lib/proposalMapping";
+import { PROPOSAL_TYPE_OPTIONS, usesStrategyContent, usesLineItemInvestment } from "../lib/proposalTypes";
 import { INDUSTRY_CATEGORIES, SERVICE_CATEGORIES } from "../lib/caseStudyCategories";
 import { generateShareToken } from "../lib/tokens";
 import ChannelCardEditor from "./proposal/editor/ChannelCardEditor";
@@ -11,6 +12,7 @@ import ProposalDocument from "./proposal/ProposalDocument";
 
 function blankForm() {
   return {
+    proposalType: "seo",
     clientCompanyName: "", clientContactName: "", clientAddress: "", clientEmail: "", preparedBy: "",
     servicesSummary: "", subtitle: "", heroEmphasisWord: "",
     industryLabel: "", targetCustomerLabel: "", targetKeywordExample: "",
@@ -25,7 +27,16 @@ function blankForm() {
     selectedCaseStudyIds: [],
     selectedPackageIds: [], recommendedPackageId: "",
     selectedAddonIds: [],
+    // Freeform line-item pricing for General SOW / PPC-only / Website
+    // proposals — see lib/proposalTypes.js and LineItemsInvestmentSection.js.
+    lineItems: [],
+    investmentRecommendation: "",
+    discountLabel: "", discountAmount: "",
   };
+}
+
+function blankLineItem() {
+  return { description: "", priceAmount: "", priceUnit: "", qty: 1, group: "primary" };
 }
 
 function rowAdd(list, blank) {
@@ -91,6 +102,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
   const [form, setForm] = useState(() =>
     isEdit
       ? {
+          proposalType: initialProposal.proposal_type || "seo",
           clientCompanyName: initialProposal.client_company_name || "",
           clientContactName: initialProposal.client_contact_name || "",
           clientAddress: initialProposal.client_address || "",
@@ -116,6 +128,16 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
           selectedPackageIds: initialPackageIds || [],
           recommendedPackageId: initialRecommendedPackageId || "",
           selectedAddonIds: initialAddonIds || [],
+          lineItems: (initialProposal.line_items || []).map((item) => ({
+            description: item.description || "",
+            priceAmount: item.price_amount ?? "",
+            priceUnit: item.price_unit || "",
+            qty: item.qty ?? 1,
+            group: item.group || "primary",
+          })),
+          investmentRecommendation: initialProposal.investment_recommendation || "",
+          discountLabel: initialProposal.discount_label || "",
+          discountAmount: initialProposal.discount_amount ?? "",
         }
       : blankForm()
   );
@@ -235,7 +257,9 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
       ...form, introText, landscapePullQuote,
       packages: selectedPackages, addons: selectedAddons, caseStudies: selectedCaseStudies,
       acceptedAt: initialProposal?.accepted_at || null,
-      agreementFinancials: computeAgreementFinancials(selectedPackages, selectedAddons),
+      agreementFinancials: usesLineItemInvestment(form.proposalType)
+        ? computeLineItemFinancials(form.lineItems, form.discountAmount)
+        : computeAgreementFinancials(selectedPackages, selectedAddons),
     };
   }, [form, packages, addons, caseStudies, addonSelectedOptions, addonPriceOverrides, initialProposal]);
 
@@ -256,6 +280,7 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
 
     const supabase = createClient();
     const payload = {
+      proposal_type: form.proposalType,
       client_company_name: form.clientCompanyName.trim(),
       client_contact_name: form.clientContactName.trim(),
       client_address: form.clientAddress.trim(),
@@ -278,6 +303,16 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
       source_callout_bullets: form.sourceCalloutBullets,
       authority_pull_quote: form.authorityPullQuote,
       selected_case_study_ids: form.selectedCaseStudyIds,
+      line_items: form.lineItems.map((item) => ({
+        description: item.description,
+        price_amount: item.priceAmount === "" ? 0 : Number(item.priceAmount) || 0,
+        price_unit: item.priceUnit,
+        qty: item.qty === "" ? 1 : Number(item.qty) || 1,
+        group: item.group || "primary",
+      })),
+      investment_recommendation: form.investmentRecommendation,
+      discount_label: form.discountLabel,
+      discount_amount: form.discountAmount === "" ? null : Number(form.discountAmount),
     };
 
     let proposalId = initialProposal?.id;
@@ -336,6 +371,16 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
     <div className="editor-split">
       <div className="editor-pane">
         <form className="form-card" onSubmit={handleSubmit}>
+          <h2 className="editor-section-title">Proposal type</h2>
+          <div className="form-grid">
+            <div className="form-field form-field-wide">
+              <label>Type</label>
+              <select value={form.proposalType} onChange={(e) => update("proposalType", e.target.value)}>
+                {PROPOSAL_TYPE_OPTIONS.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
+              </select>
+            </div>
+          </div>
+
           <h2 className="editor-section-title">Cover</h2>
           <div className="form-grid">
             <div className="form-field form-field-wide">
@@ -372,6 +417,8 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
             </div>
           </div>
 
+          {usesStrategyContent(form.proposalType) && (
+          <>
           <h2 className="editor-section-title">01 — Landscape</h2>
           <div className="form-grid">
             <div className="form-field">
@@ -571,6 +618,45 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
               </div>
             );
           })}
+          </>
+          )}
+
+          {usesLineItemInvestment(form.proposalType) && (
+          <>
+          <h2 className="editor-section-title">Investment</h2>
+          <div className="form-field form-field-wide">
+            <label>Recommendation paragraph (shown above the pricing table)</label>
+            <textarea value={form.investmentRecommendation} onChange={(e) => update("investmentRecommendation", e.target.value)} placeholder="Based on our recommendations and the desired results, we recommend a budget of $X/month…" />
+          </div>
+          <div className="form-field form-field-wide">
+            <label>Line items ({form.lineItems.length})</label>
+            {form.lineItems.map((item, i) => (
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "2fr 100px 90px 70px 130px auto", gap: 6, alignItems: "center", marginBottom: 6 }}>
+                <input type="text" placeholder="Description" value={item.description} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { description: e.target.value }))} />
+                <input type="number" placeholder="Price" value={item.priceAmount} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { priceAmount: e.target.value }))} />
+                <input type="text" placeholder="Unit, e.g. /mo" value={item.priceUnit} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { priceUnit: e.target.value }))} />
+                <input type="number" placeholder="Qty" value={item.qty} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { qty: e.target.value }))} />
+                <select value={item.group || "primary"} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { group: e.target.value }))}>
+                  <option value="primary">Primary table</option>
+                  <option value="other_costs">Other costs table</option>
+                </select>
+                <button type="button" className="link-toggle" onClick={() => update("lineItems", rowRemove(form.lineItems, i))}>Remove</button>
+              </div>
+            ))}
+            <button type="button" className="link-toggle" onClick={() => update("lineItems", rowAdd(form.lineItems, blankLineItem()))}>+ Add line item</button>
+          </div>
+          <div className="form-grid">
+            <div className="form-field">
+              <label>Discount label</label>
+              <input type="text" placeholder="e.g. Discount (10%)" value={form.discountLabel} onChange={(e) => update("discountLabel", e.target.value)} />
+            </div>
+            <div className="form-field">
+              <label>Discount amount ($)</label>
+              <input type="number" value={form.discountAmount} onChange={(e) => update("discountAmount", e.target.value)} />
+            </div>
+          </div>
+          </>
+          )}
 
           {error && <p className="form-error">{error}</p>}
           <div className="form-actions">
