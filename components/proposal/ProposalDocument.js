@@ -7,10 +7,20 @@ import SourceSection from "./SourceSection";
 import AuthoritySection from "./AuthoritySection";
 import InvestmentSection from "./InvestmentSection";
 import LineItemsInvestmentSection from "./LineItemsInvestmentSection";
+import AgencyIntroSection from "./AgencyIntroSection";
+import WebsitePlaybookSection from "./WebsitePlaybookSection";
+import PpcStrategySection from "./PpcStrategySection";
 import NextStepsSection from "./NextStepsSection";
 import ServiceAgreementSection from "./ServiceAgreementSection";
 import Footer from "./Footer";
-import { usesStrategyContent, usesLineItemInvestment, usesLegalAgreement } from "../../lib/proposalTypes";
+import {
+  usesStrategyContent,
+  usesLineItemInvestment,
+  usesLegalAgreement,
+  usesAgencyIntro,
+  usesPpcContent,
+  usesWebsitePlaybook,
+} from "../../lib/proposalTypes";
 
 // Single source of truth for the proposal's visual output — used by both the
 // internal editor's live preview and the public /view/[token] page, so they
@@ -29,10 +39,16 @@ export default function ProposalDocument({ data, afterNextSteps }) {
   const showStrategy = usesStrategyContent(proposalType);
   const showLineItems = usesLineItemInvestment(proposalType);
   const showAgreement = usesLegalAgreement(proposalType);
+  const showAgencyIntro = usesAgencyIntro(proposalType);
+  const showPpc = usesPpcContent(proposalType);
+  const showWebsitePlaybook = usesWebsitePlaybook(proposalType);
 
   return (
     <div className="proposal">
       <Cover data={data} />
+      {/* SOW / PPC-only / Website open with the fixed agency-credibility intro;
+          full SEO / SEO+PPC build credibility their own way below instead. */}
+      {showAgencyIntro && <AgencyIntroSection />}
       {showStrategy && (
         <>
           <LandscapeSection data={data} />
@@ -40,9 +56,16 @@ export default function ProposalDocument({ data, afterNextSteps }) {
           <StrategySection data={data} />
           <SourceSection data={data} />
           <AuthoritySection data={data} />
+          {/* SEO+PPC bolts the PPC keyword/forecast content into the full SEO
+              build-out, right before the catalog-driven Investment section. */}
+          {showPpc && <PpcStrategySection data={data} />}
           <InvestmentSection data={data} />
         </>
       )}
+      {showWebsitePlaybook && <WebsitePlaybookSection />}
+      {/* Standalone PPC-only proposals show the PPC content here, ahead of
+          their freeform line-item Investment table. */}
+      {!showStrategy && showPpc && <PpcStrategySection data={data} />}
       {showLineItems && <LineItemsInvestmentSection data={data} />}
       <NextStepsSection variant={showStrategy ? "seo" : "general"} />
       {showAgreement && <ServiceAgreementSection data={data} />}

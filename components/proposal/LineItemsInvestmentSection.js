@@ -22,6 +22,16 @@ function LineItemsTable({ title, items }) {
     <div className="li-table-wrap">
       {title && <div className="li-table-title">{title}</div>}
       <table className="li-table">
+        {/* Explicit colgroup + table-layout:fixed (proposal.css) so column widths
+            stay identical across thead/tbody/tfoot — without this the tfoot's
+            colSpan={3} "Total" cell let the browser's automatic column-width
+            algorithm shift the body columns out of alignment with the header. */}
+        <colgroup>
+          <col className="li-col-desc" />
+          <col style={{ width: "16%" }} />
+          <col style={{ width: "12%" }} />
+          <col style={{ width: "16%" }} />
+        </colgroup>
         <thead>
           <tr>
             <th className="li-col-desc">Description</th>

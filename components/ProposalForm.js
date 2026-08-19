@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "../lib/supabase/client";
 import { CHANNEL_DEFAULTS, buildLandscapeCopy, computeAgreementFinancials, computeLineItemFinancials } from "../lib/proposalMapping";
-import { PROPOSAL_TYPE_OPTIONS, usesStrategyContent, usesLineItemInvestment } from "../lib/proposalTypes";
+import { PROPOSAL_TYPE_OPTIONS, usesStrategyContent, usesLineItemInvestment, usesPpcContent } from "../lib/proposalTypes";
 import { INDUSTRY_CATEGORIES, SERVICE_CATEGORIES } from "../lib/caseStudyCategories";
 import { generateShareToken } from "../lib/tokens";
 import ChannelCardEditor from "./proposal/editor/ChannelCardEditor";
@@ -32,11 +32,24 @@ function blankForm() {
     lineItems: [],
     investmentRecommendation: "",
     discountLabel: "", discountAmount: "",
+    // PPC-only / SEO+PPC content — see lib/proposalTypes.js usesPpcContent
+    // and components/proposal/PpcStrategySection.js.
+    ppcKeywords: [],
+    ppcAvgCpc: "",
+    ppcBudgetTiers: [],
   };
 }
 
 function blankLineItem() {
   return { description: "", priceAmount: "", priceUnit: "", qty: 1, group: "primary" };
+}
+
+function blankPpcKeyword() {
+  return { keyword: "", searches: "" };
+}
+
+function blankPpcBudgetTier() {
+  return { budget: "" };
 }
 
 function rowAdd(list, blank) {
@@ -138,6 +151,9 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
           investmentRecommendation: initialProposal.investment_recommendation || "",
           discountLabel: initialProposal.discount_label || "",
           discountAmount: initialProposal.discount_amount ?? "",
+          ppcKeywords: initialProposal.ppc_keywords || [],
+          ppcAvgCpc: initialProposal.ppc_avg_cpc ?? "",
+          ppcBudgetTiers: initialProposal.ppc_budget_tiers || [],
         }
       : blankForm()
   );
@@ -313,6 +329,14 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
       investment_recommendation: form.investmentRecommendation,
       discount_label: form.discountLabel,
       discount_amount: form.discountAmount === "" ? null : Number(form.discountAmount),
+      ppc_keywords: form.ppcKeywords.map((k) => ({
+        keyword: k.keyword,
+        searches: k.searches === "" ? 0 : Number(k.searches) || 0,
+      })),
+      ppc_avg_cpc: form.ppcAvgCpc === "" ? null : Number(form.ppcAvgCpc),
+      ppc_budget_tiers: form.ppcBudgetTiers.map((t) => ({
+        budget: t.budget === "" ? 0 : Number(t.budget) || 0,
+      })),
     };
 
     let proposalId = initialProposal?.id;
@@ -621,6 +645,37 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
           </>
           )}
 
+          {usesPpcContent(form.proposalType) && (
+          <>
+          <h2 className="editor-section-title">PPC</h2>
+          <div className="form-field form-field-wide">
+            <label>Average CPC ($)</label>
+            <input type="number" step="0.01" style={{ maxWidth: 140 }} value={form.ppcAvgCpc} onChange={(e) => update("ppcAvgCpc", e.target.value)} placeholder="e.g. 4.50" />
+          </div>
+          <div className="form-field form-field-wide">
+            <label>Target keywords ({form.ppcKeywords.length})</label>
+            {form.ppcKeywords.map((k, i) => (
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "2fr 140px auto", gap: 6, alignItems: "center", marginBottom: 6 }}>
+                <input type="text" placeholder="Keyword" value={k.keyword} onChange={(e) => update("ppcKeywords", rowUpdate(form.ppcKeywords, i, { keyword: e.target.value }))} />
+                <input type="number" placeholder="Monthly searches" value={k.searches} onChange={(e) => update("ppcKeywords", rowUpdate(form.ppcKeywords, i, { searches: e.target.value }))} />
+                <button type="button" className="link-toggle" onClick={() => update("ppcKeywords", rowRemove(form.ppcKeywords, i))}>Remove</button>
+              </div>
+            ))}
+            <button type="button" className="link-toggle" onClick={() => update("ppcKeywords", rowAdd(form.ppcKeywords, blankPpcKeyword()))}>+ Add keyword</button>
+          </div>
+          <div className="form-field form-field-wide">
+            <label>Budget tiers to forecast ({form.ppcBudgetTiers.length})</label>
+            {form.ppcBudgetTiers.map((t, i) => (
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "160px auto", gap: 6, alignItems: "center", marginBottom: 6 }}>
+                <input type="number" placeholder="Monthly budget ($)" value={t.budget} onChange={(e) => update("ppcBudgetTiers", rowUpdate(form.ppcBudgetTiers, i, { budget: e.target.value }))} />
+                <button type="button" className="link-toggle" onClick={() => update("ppcBudgetTiers", rowRemove(form.ppcBudgetTiers, i))}>Remove</button>
+              </div>
+            ))}
+            <button type="button" className="link-toggle" onClick={() => update("ppcBudgetTiers", rowAdd(form.ppcBudgetTiers, blankPpcBudgetTier()))}>+ Add budget tier</button>
+          </div>
+          </>
+          )}
+
           {usesLineItemInvestment(form.proposalType) && (
           <>
           <h2 className="editor-section-title">Investment</h2>
@@ -631,16 +686,28 @@ export default function ProposalForm({ initialProposal, initialPackageIds, initi
           <div className="form-field form-field-wide">
             <label>Line items ({form.lineItems.length})</label>
             {form.lineItems.map((item, i) => (
-              <div key={i} style={{ display: "grid", gridTemplateColumns: "2fr 100px 90px 70px 130px auto", gap: 6, alignItems: "center", marginBottom: 6 }}>
-                <input type="text" placeholder="Description" value={item.description} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { description: e.target.value }))} />
-                <input type="number" placeholder="Price" value={item.priceAmount} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { priceAmount: e.target.value }))} />
-                <input type="text" placeholder="Unit, e.g. /mo" value={item.priceUnit} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { priceUnit: e.target.value }))} />
-                <input type="number" placeholder="Qty" value={item.qty} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { qty: e.target.value }))} />
-                <select value={item.group || "primary"} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { group: e.target.value }))}>
-                  <option value="primary">Primary table</option>
-                  <option value="other_costs">Other costs table</option>
-                </select>
-                <button type="button" className="link-toggle" onClick={() => update("lineItems", rowRemove(form.lineItems, i))}>Remove</button>
+              <div key={i} style={{ border: "1px solid var(--border, #ddd)", borderRadius: 6, padding: 10, marginBottom: 8 }}>
+                <textarea
+                  placeholder="Description"
+                  value={item.description}
+                  onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { description: e.target.value }))}
+                  rows={2}
+                  style={{ width: "100%", fontSize: 14, padding: "8px 10px", marginBottom: 8, resize: "vertical", boxSizing: "border-box" }}
+                />
+                <div style={{ display: "grid", gridTemplateColumns: "110px 130px 70px 150px auto", gap: 6, alignItems: "center" }}>
+                  <input type="number" placeholder="Price" value={item.priceAmount} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { priceAmount: e.target.value }))} />
+                  <select value={item.priceUnit} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { priceUnit: e.target.value }))}>
+                    <option value="">One-time</option>
+                    <option value="/mo">Monthly</option>
+                    <option value="/yr">Yearly</option>
+                  </select>
+                  <input type="number" placeholder="Qty" value={item.qty} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { qty: e.target.value }))} />
+                  <select value={item.group || "primary"} onChange={(e) => update("lineItems", rowUpdate(form.lineItems, i, { group: e.target.value }))}>
+                    <option value="primary">Primary table</option>
+                    <option value="other_costs">Other costs table</option>
+                  </select>
+                  <button type="button" className="link-toggle" onClick={() => update("lineItems", rowRemove(form.lineItems, i))}>Remove</button>
+                </div>
               </div>
             ))}
             <button type="button" className="link-toggle" onClick={() => update("lineItems", rowAdd(form.lineItems, blankLineItem()))}>+ Add line item</button>
