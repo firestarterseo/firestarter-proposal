@@ -17,7 +17,7 @@ export default function LandscapeSection({ data }) {
       <div className="legend">
         <div className="leg-item"><div className="leg-swatch" style={{ background: "#fce8ea", border: "1px solid #842029" }} />Invisible</div>
         <div className="leg-item"><div className="leg-swatch" style={{ background: "#fff3cd", border: "1px solid #856404" }} />Partial</div>
-        <div className="leg-item"><div className="leg-swatch" style={{ background: "#F48020" }} />Active / core channel</div>
+        <div className="leg-item"><div className="leg-swatch" style={{ background: "var(--fo)" }} />Active / core channel</div>
       </div>
 
       <div className="stat3">

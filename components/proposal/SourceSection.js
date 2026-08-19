@@ -16,7 +16,7 @@ export default function SourceSection({ data }) {
     <>
       <div className="sec-brand">
         <div style={{ fontFamily: '"Fjalla One",sans-serif', fontSize: 48, textTransform: "uppercase", lineHeight: 0.95, color: "#fff", marginBottom: 6 }}>
-          BECOME THE <em style={{ color: "#F48020", fontStyle: "normal" }}>SOURCE.</em>
+          BECOME THE <em style={{ color: "var(--fo)", fontStyle: "normal" }}>SOURCE.</em>
         </div>
         <div style={{ fontFamily: '"Fjalla One",sans-serif', fontSize: 22, textTransform: "uppercase", color: "var(--text2-lt)", letterSpacing: "0.04em", marginBottom: 24 }}>
           Not Just an Answer.
@@ -53,7 +53,7 @@ export default function SourceSection({ data }) {
       <div className="sec">
         <span className="eye">SOURCE&trade; &mdash; Six Pillars</span>
         <div style={{ fontFamily: '"Fjalla One",sans-serif', fontSize: 32, textTransform: "uppercase", color: "var(--text)", lineHeight: 1, marginBottom: 6 }}>
-          Six Pillars That Turn Your <em style={{ color: "#F48020", fontStyle: "normal" }}>Business Data</em> Into Undeniable Authority
+          Six Pillars That Turn Your <em style={{ color: "var(--fo)", fontStyle: "normal" }}>Business Data</em> Into Undeniable Authority
         </div>
         <p style={{ fontSize: 14, color: "var(--text2)", lineHeight: 1.7, maxWidth: 600, marginBottom: 0 }}>
           Most businesses are sitting on 12&ndash;24 months of citable data they don&rsquo;t realize is

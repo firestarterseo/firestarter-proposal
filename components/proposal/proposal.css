@@ -6,7 +6,18 @@
 
 .proposal, .proposal *, .proposal *::before, .proposal *::after { box-sizing: border-box; margin: 0; padding: 0; }
 .proposal {
-  --fo: #F48020; --fr: #F15B41; --fd: #1E1526; --fs: #2d3748;
+  /* Brand colors per "2026 Firestarter Brand Guidelines" (Firestarter Orange
+     #F27F30, Firestarter Red #EF4B45, Deep Charcoal #1D1525) — these were
+     previously off-brand approximations. --fd2 and --fd-line are NOT from
+     the guide (which defines a single dark swatch, no elevation scale) —
+     they're tints derived from the same Deep Charcoal hue, used to give
+     nested cards/dividers on a dark section some visual separation without
+     falling back to generic black/gray, which is what this replaces
+     (#111/#0d0d0d/#1a1a1a/#1e1e1e/#252525/#2a2a2a/#2d3748 had no relation to
+     the brand palette at all).
+  */
+  --fo: #F27F30; --fr: #EF4B45; --fd: #1D1525;
+  --fd2: #2d2535; --fd-line: rgba(255, 255, 255, 0.08);
   --bg: #ffffff; --bg2: #f7f7f8; --border: #e4e4e7;
   --text: #18181b; --text2: #52525b;
   /* Secondary/tertiary text color for dark-background sections (cover,
@@ -35,9 +46,9 @@
 
 /* SECTIONS */
 .proposal .sec       { padding: 56px; border-bottom: 1px solid var(--border); background: var(--bg); }
-.proposal .sec-dark  { padding: 56px; border-bottom: 1px solid #1e1e1e; background: #111; }
+.proposal .sec-dark  { padding: 56px; border-bottom: 1px solid var(--fd2); background: var(--fd); }
 .proposal .sec-mid   { padding: 56px; border-bottom: 1px solid var(--border); background: var(--bg2); }
-.proposal .sec-brand { padding: 56px; border-bottom: 1px solid #2d2535; background: var(--fd); }
+.proposal .sec-brand { padding: 56px; border-bottom: 1px solid var(--fd2); background: var(--fd); }
 
 /* SERVICE AGREEMENT */
 .proposal .sa-open p { font-size: 13px; line-height: 1.8; color: var(--text2); margin-bottom: 18px; max-width: 720px; }
@@ -50,7 +61,7 @@
 /* PULL QUOTE */
 .proposal .pq    { border-left: 4px solid var(--fo); padding: 16px 22px; background: var(--bg2); border-radius: 0 8px 8px 0; margin: 28px 0; font-size: 14px; color: var(--text2); line-height: 1.75; }
 .proposal .pq strong { color: var(--text); }
-.proposal .pq-lt { border-left: 4px solid var(--fo); padding: 16px 22px; background: #1a1a1a; border-radius: 0 8px 8px 0; margin: 28px 0; font-size: 14px; color: var(--text2-lt); line-height: 1.75; }
+.proposal .pq-lt { border-left: 4px solid var(--fo); padding: 16px 22px; background: var(--fd2); border-radius: 0 8px 8px 0; margin: 28px 0; font-size: 14px; color: var(--text2-lt); line-height: 1.75; }
 .proposal .pq-lt strong { color: #fff; }
 
 /* COVER */
@@ -60,15 +71,15 @@
 .proposal .cover h1 { font-family: "Fjalla One", sans-serif; font-size: 72px; line-height: .92; color: #fff; text-transform: uppercase; margin-bottom: 6px; }
 .proposal .cover h1 em { color: var(--fo); font-style: normal; }
 .proposal .cover-sub { font-family: "Roboto Slab", serif; font-size: 16px; color: var(--text2-lt); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 52px; }
-.proposal .cover-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 1px solid #2d2535; padding-top: 32px; }
+.proposal .cover-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 1px solid var(--fd2); padding-top: 32px; }
 .proposal .cover-cell label { display: block; font-family: "Roboto Slab", serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--fo); margin-bottom: 5px; }
 .proposal .cover-cell span { font-size: 13px; color: var(--text2-lt); }
-.proposal .trust-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px; padding-top: 28px; border-top: 1px solid #2d2535; }
-.proposal .tpill { font-size: 11px; color: var(--text2-lt); border: 1px solid #2d2535; padding: 4px 12px; border-radius: 20px; }
+.proposal .trust-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--fd2); }
+.proposal .tpill { font-size: 11px; color: var(--text2-lt); border: 1px solid var(--fd2); padding: 4px 12px; border-radius: 20px; }
 
 /* STAT BAR */
 .proposal .stat3 { display: grid; grid-template-columns: 1fr 1fr 1fr; background: var(--fd); border-radius: 8px; overflow: hidden; margin: 28px 0 0; }
-.proposal .stat3-cell { padding: 22px 18px; border-right: 1px solid #2d2535; }
+.proposal .stat3-cell { padding: 22px 18px; border-right: 1px solid var(--fd2); }
 .proposal .stat3-cell:last-child { border-right: none; }
 .proposal .stat3-num { font-family: "Fjalla One", sans-serif; font-size: 36px; color: var(--fo); line-height: 1; margin-bottom: 4px; }
 .proposal .stat3-label { font-size: 12px; color: var(--text2-lt); line-height: 1.5; }
@@ -80,7 +91,7 @@
 
 /* GAP ANALYSIS */
 .proposal .ledger { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 12px 0 28px; }
-.proposal .ledger-head { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; background: var(--fs); padding: 10px 16px; }
+.proposal .ledger-head { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; background: var(--fd); padding: 10px 16px; }
 .proposal .ledger-head span { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: #ccc; }
 .proposal .ledger-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 10px 16px; border-top: 1px solid var(--border); align-items: center; }
 .proposal .ledger-row:nth-child(odd)  { background: var(--bg2); }
@@ -111,7 +122,7 @@
 
 /* STRATEGY LAYERS */
 .proposal .strategy-layers { display: grid; grid-template-columns: 1fr; gap: 2px; margin: 32px 0; }
-.proposal .layer { background: #1a1a1a; border-left: 4px solid var(--fo); padding: 28px 28px 28px 24px; }
+.proposal .layer { background: var(--fd2); border-left: 4px solid var(--fo); padding: 28px 28px 28px 24px; }
 .proposal .layer.l2 { border-left-color: var(--fr); }
 .proposal .layer-letter { font-family: "Fjalla One", sans-serif; font-size: 56px; color: var(--fo); opacity: .18; line-height: 1; float: right; margin: -8px -4px 0 16px; }
 .proposal .layer-letter.r { color: var(--fr); }
@@ -120,37 +131,37 @@
 .proposal .layer-title { font-family: "Fjalla One", sans-serif; font-size: 22px; text-transform: uppercase; color: #fff; margin-bottom: 10px; }
 .proposal .layer-body { font-size: 13px; color: var(--text2-lt); line-height: 1.7; margin-bottom: 16px; }
 .proposal .layer-items { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-.proposal .li-card { background: #111; border: 1px solid #2a2a2a; border-radius: 6px; padding: 12px 14px; }
+.proposal .li-card { background: var(--fd); border: 1px solid var(--fd-line); border-radius: 6px; padding: 12px 14px; }
 .proposal .li-title { font-family: "Roboto Slab", serif; font-size: 12px; color: #fff; margin-bottom: 4px; }
 .proposal .li-desc { font-size: 11px; color: var(--text2-lt); line-height: 1.55; }
 .proposal .ch-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
-.proposal .ch-li { display: flex; gap: 10px; background: #111; border: 1px solid #2a2a2a; border-radius: 6px; padding: 10px 12px; align-items: flex-start; }
+.proposal .ch-li { display: flex; gap: 10px; background: var(--fd); border: 1px solid var(--fd-line); border-radius: 6px; padding: 10px 12px; align-items: flex-start; }
 .proposal .ch-li-num { font-family: "Fjalla One", sans-serif; font-size: 18px; color: var(--fo); line-height: 1; flex-shrink: 0; width: 18px; }
 .proposal .ch-li-title { font-family: "Roboto Slab", serif; font-size: 11px; color: #ddd; margin-bottom: 2px; }
 .proposal .ch-li-desc { font-size: 11px; color: var(--text2-lt); line-height: 1.5; }
 
 /* CASE STUDIES */
 .proposal .cases { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 28px 0; }
-.proposal .case-c { background: #1a1a1a; border: 1px solid #252525; border-radius: 10px; padding: 20px 18px; display: block; }
+.proposal .case-c { background: var(--fd2); border: 1px solid var(--fd-line); border-radius: 10px; padding: 20px 18px; display: block; }
 .proposal .case-c-link { transition: border-color 0.15s, transform 0.15s; }
 .proposal .case-c-link:hover { border-color: var(--fo); transform: translateY(-1px); }
 .proposal .case-ind { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--fo); margin-bottom: 12px; }
 .proposal .case-num { font-family: "Fjalla One", sans-serif; font-size: 44px; color: #fff; line-height: 1; margin-bottom: 4px; }
 .proposal .case-lbl { font-size: 12px; color: var(--text2-lt); line-height: 1.4; margin-bottom: 12px; }
-.proposal .case-co { font-size: 11px; color: var(--text2-lt); border-top: 1px solid #252525; padding-top: 10px; }
+.proposal .case-co { font-size: 11px; color: var(--text2-lt); border-top: 1px solid var(--fd-line); padding-top: 10px; }
 
 /* SOURCE */
-.proposal .geo-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: #2d2535; border-radius: 8px; overflow: hidden; margin-bottom: 36px; }
+.proposal .geo-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--fd2); border-radius: 8px; overflow: hidden; margin-bottom: 36px; }
 .proposal .gs-cell { background: var(--fd); padding: 20px 18px; }
 .proposal .gs-num { font-family: "Fjalla One", sans-serif; font-size: 36px; color: var(--fo); line-height: 1; margin-bottom: 4px; }
 .proposal .gs-label { font-size: 12px; color: var(--text2-lt); line-height: 1.5; }
-.proposal .contrast { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #2d2535; border-radius: 10px; overflow: hidden; }
-.proposal .ct-head { padding: 12px 20px; font-family: "Roboto Slab", serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; background: #1a1119; border-bottom: 1px solid #2d2535; }
-.proposal .ct-head.bad  { color: var(--text2-lt); border-right: 1px solid #2d2535; }
+.proposal .contrast { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--fd2); border-radius: 10px; overflow: hidden; }
+.proposal .ct-head { padding: 12px 20px; font-family: "Roboto Slab", serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; background: var(--fd); border-bottom: 1px solid var(--fd2); }
+.proposal .ct-head.bad  { color: var(--text2-lt); border-right: 1px solid var(--fd2); }
 .proposal .ct-head.good { color: var(--fo); }
-.proposal .ct-cell { padding: 11px 20px; font-size: 13px; line-height: 1.5; border-bottom: 1px solid #1e1e1e; }
+.proposal .ct-cell { padding: 11px 20px; font-size: 13px; line-height: 1.5; border-bottom: 1px solid var(--fd-line); }
 .proposal .ct-cell:nth-last-child(-n+2) { border-bottom: none; }
-.proposal .ct-cell.bad  { color: var(--text2-lt); border-right: 1px solid #1e1e1e; font-style: italic; }
+.proposal .ct-cell.bad  { color: var(--text2-lt); border-right: 1px solid var(--fd-line); font-style: italic; }
 .proposal .ct-cell.good { color: #ccc; }
 .proposal .ct-cell.good strong { color: var(--fo); }
 
@@ -170,7 +181,7 @@
 .proposal .sc-stat { text-align: center; }
 .proposal .sc-num { font-family: "Fjalla One", sans-serif; font-size: 36px; color: var(--fo); line-height: 1; margin-bottom: 4px; }
 .proposal .sc-label { font-size: 11px; color: var(--text2-lt); line-height: 1.5; }
-.proposal .sc-div { background: #2d2535; align-self: stretch; }
+.proposal .sc-div { background: var(--fd2); align-self: stretch; }
 
 .proposal .tiol-box { margin-top: 24px; border: 1.5px solid var(--fo); border-radius: 10px; padding: 24px 28px; }
 .proposal .tiol-eye { font-family: "Roboto Slab", serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--fo); margin-bottom: 12px; display: block; }
@@ -229,7 +240,7 @@
 .proposal .onetime-box { background: var(--fd); border-radius: 10px; padding: 24px 28px; margin-bottom: 36px; }
 .proposal .onetime-head { font-family: "Fjalla One", sans-serif; font-size: 16px; text-transform: uppercase; color: #fff; margin-bottom: 16px; }
 .proposal .onetime-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.proposal .onetime-row { display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: .5px solid #2d2535; }
+.proposal .onetime-row { display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: .5px solid var(--fd2); }
 .proposal .onetime-row:last-child { border-bottom: none; }
 .proposal .onetime-row span:first-child { color: var(--text2-lt); }
 .proposal .onetime-row span:last-child { font-weight: 600; color: var(--fo); }
@@ -271,7 +282,7 @@
 .proposal .cta-phone { font-family: "Fjalla One", sans-serif; font-size: 26px; color: #fff; text-align: right; }
 .proposal .cta-url  { font-size: 13px; color: var(--fo); text-align: right; }
 .proposal .cta-note { font-size: 11px; color: var(--text2-lt); margin-top: 4px; text-align: right; }
-.proposal .footer { background: #0d0d0d; padding: 36px 56px; display: flex; justify-content: space-between; align-items: center; }
+.proposal .footer { background: var(--fd); padding: 36px 56px; display: flex; justify-content: space-between; align-items: center; }
 .proposal .footer-brand { font-family: "Fjalla One", sans-serif; font-size: 22px; text-transform: uppercase; color: #fff; }
 .proposal .footer-brand em { color: var(--fo); font-style: normal; }
 .proposal .footer-sub { font-size: 11px; color: var(--text2-lt); margin-top: 4px; }

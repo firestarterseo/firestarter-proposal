@@ -2,6 +2,13 @@
 // Layout (hub position, spoke lines, card positions) is fixed — only each
 // card's title/badge/stat rows are data-driven, one per entry in `channels`
 // (expects exactly 5, in this order: organic, aiOverviews, localMaps, aeoLlm, googleAds).
+//
+// SVG can't reference the .proposal CSS custom properties, so brand colors
+// are hardcoded here — kept in sync with proposal.css's --fo (#F27F30) and
+// --fd (#1D1525) per the 2026 Firestarter Brand Guidelines. The inactive
+// card header (previously #2d3748, an off-brand slate) and hub circle
+// (previously #1a1f2e, an off-brand navy) now both use the brand's Deep
+// Charcoal instead.
 
 const CARD_POSITIONS = [
   { x: 285, y: 10 },  // top: organic
@@ -26,13 +33,13 @@ const BADGE_STYLES = {
 
 function ChannelCard({ x, y, title, headerActive, badgeLabel, badgeVariant, rows }) {
   const badgeStyle = BADGE_STYLES[badgeVariant] || BADGE_STYLES.invisible;
-  const headerFill = headerActive ? "#F48020" : "#2d3748";
+  const headerFill = headerActive ? "#F27F30" : "#1D1525";
   const badgeWidth = badgeVariant === "active" ? 54 : badgeVariant === "not_running" ? 88 : 70;
   const badgeX = 198 - 12 - badgeWidth;
 
   return (
     <g transform={`translate(${x},${y})`}>
-      <rect width="210" height="118" rx="8" fill="white" stroke={headerActive ? "#F48020" : "#e4e4e7"} strokeWidth={headerActive ? 2 : 1.2} />
+      <rect width="210" height="118" rx="8" fill="white" stroke={headerActive ? "#F27F30" : "#e4e4e7"} strokeWidth={headerActive ? 2 : 1.2} />
       <rect width="210" height="28" rx="8" fill={headerFill} />
       <rect y="16" width="210" height="12" fill={headerFill} />
       <text x="12" y="19.5" fontFamily="Fjalla One,sans-serif" fontSize="12" fill="white" letterSpacing=".5">{title}</text>
@@ -59,18 +66,18 @@ export default function ChannelDiagram({ channels, hubLabel }) {
     <svg width="100%" viewBox="0 0 780 560" xmlns="http://www.w3.org/2000/svg" style={{ fontFamily: "Overpass,sans-serif" }}>
       <defs>
         <marker id="proposal-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-          <path d="M1 2L8 5L1 8" fill="none" stroke="#F48020" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M1 2L8 5L1 8" fill="none" stroke="#F27F30" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
         </marker>
       </defs>
-      <line x1="390" y1="165" x2="390" y2="82" stroke="#F48020" strokeWidth="1.5" strokeDasharray="5 4" opacity=".6" markerEnd="url(#proposal-arrow)" />
-      <line x1="272" y1="278" x2="130" y2="254" stroke="#F48020" strokeWidth="1.5" strokeDasharray="5 4" opacity=".6" markerEnd="url(#proposal-arrow)" />
-      <line x1="516" y1="278" x2="650" y2="254" stroke="#F48020" strokeWidth="1.5" strokeDasharray="5 4" opacity=".6" markerEnd="url(#proposal-arrow)" />
-      <line x1="336" y1="362" x2="248" y2="432" stroke="#F48020" strokeWidth="1.5" strokeDasharray="5 4" opacity=".6" markerEnd="url(#proposal-arrow)" />
-      <line x1="444" y1="362" x2="532" y2="432" stroke="#F48020" strokeWidth="1.5" strokeDasharray="5 4" opacity=".6" markerEnd="url(#proposal-arrow)" />
+      <line x1="390" y1="165" x2="390" y2="82" stroke="#F27F30" strokeWidth="1.5" strokeDasharray="5 4" opacity=".6" markerEnd="url(#proposal-arrow)" />
+      <line x1="272" y1="278" x2="130" y2="254" stroke="#F27F30" strokeWidth="1.5" strokeDasharray="5 4" opacity=".6" markerEnd="url(#proposal-arrow)" />
+      <line x1="516" y1="278" x2="650" y2="254" stroke="#F27F30" strokeWidth="1.5" strokeDasharray="5 4" opacity=".6" markerEnd="url(#proposal-arrow)" />
+      <line x1="336" y1="362" x2="248" y2="432" stroke="#F27F30" strokeWidth="1.5" strokeDasharray="5 4" opacity=".6" markerEnd="url(#proposal-arrow)" />
+      <line x1="444" y1="362" x2="532" y2="432" stroke="#F27F30" strokeWidth="1.5" strokeDasharray="5 4" opacity=".6" markerEnd="url(#proposal-arrow)" />
 
-      <circle cx="390" cy="295" r="70" fill="#1a1f2e" stroke="#F48020" strokeWidth="2.5" />
-      <text x="390" y="281" textAnchor="middle" fontFamily="Fjalla One,sans-serif" fontSize="13" fill="#F48020" letterSpacing="1">{hubLabel}</text>
-      <line x1="340" y1="293" x2="440" y2="293" stroke="#F48020" strokeWidth="0.8" opacity=".4" />
+      <circle cx="390" cy="295" r="70" fill="#1D1525" stroke="#F27F30" strokeWidth="2.5" />
+      <text x="390" y="281" textAnchor="middle" fontFamily="Fjalla One,sans-serif" fontSize="13" fill="#F27F30" letterSpacing="1">{hubLabel}</text>
+      <line x1="340" y1="293" x2="440" y2="293" stroke="#F27F30" strokeWidth="0.8" opacity=".4" />
       <text x="390" y="310" textAnchor="middle" fontFamily="Overpass,sans-serif" fontSize="9" fill="#ffffff" opacity=".45" letterSpacing="1">SEARCH VISIBILITY</text>
 
       {cards.map((card, i) => {
