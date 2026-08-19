@@ -93,7 +93,7 @@ export default function StrategySection({ data }) {
               );
             })}
           </div>
-          <div style={{ fontSize: 11, color: "#444", marginTop: 4 }}>Full case studies at firestarterseo.com/case-studies</div>
+          <div style={{ fontSize: 11, color: "var(--text2-lt)", marginTop: 4 }}>Full case studies at firestarterseo.com/case-studies</div>
         </>
       )}
     </div>

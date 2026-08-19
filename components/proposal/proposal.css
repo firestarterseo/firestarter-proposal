@@ -9,6 +9,13 @@
   --fo: #F48020; --fr: #F15B41; --fd: #1E1526; --fs: #2d3748;
   --bg: #ffffff; --bg2: #f7f7f8; --border: #e4e4e7;
   --text: #18181b; --text2: #52525b;
+  /* Secondary/tertiary text color for dark-background sections (cover,
+     sec-dark, sec-brand, footer, and any element that sets its own dark
+     background like .onetime-box or .stat3). The old ad-hoc dark grays used
+     here (#555/#666/#444/#333/#888) were sized for readability against a
+     LIGHT background and are effectively invisible against these near-black
+     backgrounds — this is a WCAG-contrast-checked light gray instead. */
+  --text2-lt: #a8a5b0;
   --red: #842029; --amber: #856404; --green: #1a5c2a;
   font-family: "Overpass", sans-serif; background: var(--bg); color: var(--text);
   max-width: 860px; margin: 0 auto;
@@ -22,9 +29,9 @@
 .proposal .h2-lt  { font-family: "Fjalla One", sans-serif; font-size: 44px; text-transform: uppercase; line-height: .95; color: #fff; margin-bottom: 18px; }
 .proposal .h2-lt em { color: var(--fo); font-style: normal; }
 .proposal .intro    { font-size: 15px; line-height: 1.75; color: var(--text2); max-width: 580px; margin-bottom: 36px; }
-.proposal .intro-lt { font-size: 15px; line-height: 1.75; color: #888; max-width: 580px; margin-bottom: 36px; }
+.proposal .intro-lt { font-size: 15px; line-height: 1.75; color: var(--text2-lt); max-width: 580px; margin-bottom: 36px; }
 .proposal .sec-label    { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--text2); margin-bottom: 12px; display: block; }
-.proposal .sec-label-lt { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: #444; margin-bottom: 12px; display: block; }
+.proposal .sec-label-lt { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--text2-lt); margin-bottom: 12px; display: block; }
 
 /* SECTIONS */
 .proposal .sec       { padding: 56px; border-bottom: 1px solid var(--border); background: var(--bg); }
@@ -43,7 +50,7 @@
 /* PULL QUOTE */
 .proposal .pq    { border-left: 4px solid var(--fo); padding: 16px 22px; background: var(--bg2); border-radius: 0 8px 8px 0; margin: 28px 0; font-size: 14px; color: var(--text2); line-height: 1.75; }
 .proposal .pq strong { color: var(--text); }
-.proposal .pq-lt { border-left: 4px solid var(--fo); padding: 16px 22px; background: #1a1a1a; border-radius: 0 8px 8px 0; margin: 28px 0; font-size: 14px; color: #888; line-height: 1.75; }
+.proposal .pq-lt { border-left: 4px solid var(--fo); padding: 16px 22px; background: #1a1a1a; border-radius: 0 8px 8px 0; margin: 28px 0; font-size: 14px; color: var(--text2-lt); line-height: 1.75; }
 .proposal .pq-lt strong { color: #fff; }
 
 /* COVER */
@@ -52,19 +59,19 @@
 .proposal .cover-eye { font-family: "Roboto Slab", serif; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--fo); margin-bottom: 20px; display: block; }
 .proposal .cover h1 { font-family: "Fjalla One", sans-serif; font-size: 72px; line-height: .92; color: #fff; text-transform: uppercase; margin-bottom: 6px; }
 .proposal .cover h1 em { color: var(--fo); font-style: normal; }
-.proposal .cover-sub { font-family: "Roboto Slab", serif; font-size: 16px; color: #555; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 52px; }
+.proposal .cover-sub { font-family: "Roboto Slab", serif; font-size: 16px; color: var(--text2-lt); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 52px; }
 .proposal .cover-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 1px solid #2d2535; padding-top: 32px; }
 .proposal .cover-cell label { display: block; font-family: "Roboto Slab", serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--fo); margin-bottom: 5px; }
-.proposal .cover-cell span { font-size: 13px; color: #aaa; }
+.proposal .cover-cell span { font-size: 13px; color: var(--text2-lt); }
 .proposal .trust-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px; padding-top: 28px; border-top: 1px solid #2d2535; }
-.proposal .tpill { font-size: 11px; color: #555; border: 1px solid #2d2535; padding: 4px 12px; border-radius: 20px; }
+.proposal .tpill { font-size: 11px; color: var(--text2-lt); border: 1px solid #2d2535; padding: 4px 12px; border-radius: 20px; }
 
 /* STAT BAR */
 .proposal .stat3 { display: grid; grid-template-columns: 1fr 1fr 1fr; background: var(--fd); border-radius: 8px; overflow: hidden; margin: 28px 0 0; }
 .proposal .stat3-cell { padding: 22px 18px; border-right: 1px solid #2d2535; }
 .proposal .stat3-cell:last-child { border-right: none; }
 .proposal .stat3-num { font-family: "Fjalla One", sans-serif; font-size: 36px; color: var(--fo); line-height: 1; margin-bottom: 4px; }
-.proposal .stat3-label { font-size: 12px; color: #888; line-height: 1.5; }
+.proposal .stat3-label { font-size: 12px; color: var(--text2-lt); line-height: 1.5; }
 
 /* LEGEND */
 .proposal .legend { display: flex; gap: 24px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text2); align-items: center; justify-content: center; }
@@ -111,16 +118,16 @@
 .proposal .layer-eye { font-family: "Roboto Slab", serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--fo); margin-bottom: 8px; display: block; }
 .proposal .layer-eye.r { color: var(--fr); }
 .proposal .layer-title { font-family: "Fjalla One", sans-serif; font-size: 22px; text-transform: uppercase; color: #fff; margin-bottom: 10px; }
-.proposal .layer-body { font-size: 13px; color: #888; line-height: 1.7; margin-bottom: 16px; }
+.proposal .layer-body { font-size: 13px; color: var(--text2-lt); line-height: 1.7; margin-bottom: 16px; }
 .proposal .layer-items { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
 .proposal .li-card { background: #111; border: 1px solid #2a2a2a; border-radius: 6px; padding: 12px 14px; }
 .proposal .li-title { font-family: "Roboto Slab", serif; font-size: 12px; color: #fff; margin-bottom: 4px; }
-.proposal .li-desc { font-size: 11px; color: #555; line-height: 1.55; }
+.proposal .li-desc { font-size: 11px; color: var(--text2-lt); line-height: 1.55; }
 .proposal .ch-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
 .proposal .ch-li { display: flex; gap: 10px; background: #111; border: 1px solid #2a2a2a; border-radius: 6px; padding: 10px 12px; align-items: flex-start; }
 .proposal .ch-li-num { font-family: "Fjalla One", sans-serif; font-size: 18px; color: var(--fo); line-height: 1; flex-shrink: 0; width: 18px; }
 .proposal .ch-li-title { font-family: "Roboto Slab", serif; font-size: 11px; color: #ddd; margin-bottom: 2px; }
-.proposal .ch-li-desc { font-size: 11px; color: #555; line-height: 1.5; }
+.proposal .ch-li-desc { font-size: 11px; color: var(--text2-lt); line-height: 1.5; }
 
 /* CASE STUDIES */
 .proposal .cases { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 28px 0; }
@@ -129,21 +136,21 @@
 .proposal .case-c-link:hover { border-color: var(--fo); transform: translateY(-1px); }
 .proposal .case-ind { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--fo); margin-bottom: 12px; }
 .proposal .case-num { font-family: "Fjalla One", sans-serif; font-size: 44px; color: #fff; line-height: 1; margin-bottom: 4px; }
-.proposal .case-lbl { font-size: 12px; color: #666; line-height: 1.4; margin-bottom: 12px; }
-.proposal .case-co { font-size: 11px; color: #444; border-top: 1px solid #252525; padding-top: 10px; }
+.proposal .case-lbl { font-size: 12px; color: var(--text2-lt); line-height: 1.4; margin-bottom: 12px; }
+.proposal .case-co { font-size: 11px; color: var(--text2-lt); border-top: 1px solid #252525; padding-top: 10px; }
 
 /* SOURCE */
 .proposal .geo-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: #2d2535; border-radius: 8px; overflow: hidden; margin-bottom: 36px; }
 .proposal .gs-cell { background: var(--fd); padding: 20px 18px; }
 .proposal .gs-num { font-family: "Fjalla One", sans-serif; font-size: 36px; color: var(--fo); line-height: 1; margin-bottom: 4px; }
-.proposal .gs-label { font-size: 12px; color: #666; line-height: 1.5; }
+.proposal .gs-label { font-size: 12px; color: var(--text2-lt); line-height: 1.5; }
 .proposal .contrast { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #2d2535; border-radius: 10px; overflow: hidden; }
 .proposal .ct-head { padding: 12px 20px; font-family: "Roboto Slab", serif; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; background: #1a1119; border-bottom: 1px solid #2d2535; }
-.proposal .ct-head.bad  { color: #555; border-right: 1px solid #2d2535; }
+.proposal .ct-head.bad  { color: var(--text2-lt); border-right: 1px solid #2d2535; }
 .proposal .ct-head.good { color: var(--fo); }
 .proposal .ct-cell { padding: 11px 20px; font-size: 13px; line-height: 1.5; border-bottom: 1px solid #1e1e1e; }
 .proposal .ct-cell:nth-last-child(-n+2) { border-bottom: none; }
-.proposal .ct-cell.bad  { color: #555; border-right: 1px solid #1e1e1e; font-style: italic; }
+.proposal .ct-cell.bad  { color: var(--text2-lt); border-right: 1px solid #1e1e1e; font-style: italic; }
 .proposal .ct-cell.good { color: #ccc; }
 .proposal .ct-cell.good strong { color: var(--fo); }
 
@@ -162,7 +169,7 @@
 .proposal .source-callout { margin-top: 28px; background: var(--fd); border-radius: 10px; padding: 28px 32px; display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; gap: 24px; align-items: center; }
 .proposal .sc-stat { text-align: center; }
 .proposal .sc-num { font-family: "Fjalla One", sans-serif; font-size: 36px; color: var(--fo); line-height: 1; margin-bottom: 4px; }
-.proposal .sc-label { font-size: 11px; color: #666; line-height: 1.5; }
+.proposal .sc-label { font-size: 11px; color: var(--text2-lt); line-height: 1.5; }
 .proposal .sc-div { background: #2d2535; align-self: stretch; }
 
 .proposal .tiol-box { margin-top: 24px; border: 1.5px solid var(--fo); border-radius: 10px; padding: 24px 28px; }
@@ -224,7 +231,7 @@
 .proposal .onetime-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .proposal .onetime-row { display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: .5px solid #2d2535; }
 .proposal .onetime-row:last-child { border-bottom: none; }
-.proposal .onetime-row span:first-child { color: #888; }
+.proposal .onetime-row span:first-child { color: var(--text2-lt); }
 .proposal .onetime-row span:last-child { font-weight: 600; color: var(--fo); }
 
 /* LINE-ITEM INVESTMENT (General SOW / PPC-only / Website) */
@@ -260,15 +267,15 @@
 .proposal .cta-block { background: var(--fd); border-radius: 10px; padding: 32px 36px; display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-top: 36px; }
 .proposal .cta-eye  { font-family: "Roboto Slab", serif; font-size: 10px; text-transform: uppercase; letter-spacing: .12em; color: var(--fo); margin-bottom: 6px; display: block; }
 .proposal .cta-head { font-family: "Fjalla One", sans-serif; font-size: 28px; text-transform: uppercase; color: #fff; }
-.proposal .cta-sub  { font-size: 12px; color: #555; margin-top: 4px; }
+.proposal .cta-sub  { font-size: 12px; color: var(--text2-lt); margin-top: 4px; }
 .proposal .cta-phone { font-family: "Fjalla One", sans-serif; font-size: 26px; color: #fff; text-align: right; }
 .proposal .cta-url  { font-size: 13px; color: var(--fo); text-align: right; }
-.proposal .cta-note { font-size: 11px; color: #444; margin-top: 4px; text-align: right; }
+.proposal .cta-note { font-size: 11px; color: var(--text2-lt); margin-top: 4px; text-align: right; }
 .proposal .footer { background: #0d0d0d; padding: 36px 56px; display: flex; justify-content: space-between; align-items: center; }
 .proposal .footer-brand { font-family: "Fjalla One", sans-serif; font-size: 22px; text-transform: uppercase; color: #fff; }
 .proposal .footer-brand em { color: var(--fo); font-style: normal; }
-.proposal .footer-sub { font-size: 11px; color: #333; margin-top: 4px; }
-.proposal .footer-r { text-align: right; font-size: 12px; color: #444; line-height: 1.8; }
+.proposal .footer-sub { font-size: 11px; color: var(--text2-lt); margin-top: 4px; }
+.proposal .footer-r { text-align: right; font-size: 12px; color: var(--text2-lt); line-height: 1.8; }
 .proposal .footer-r a { color: var(--fo); text-decoration: none; }
 
 /* ACCEPT / DECLINE (new — not in the original static HTML) */

@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="footer-r">
         <div>303-909-6698</div>
         <div><a href="https://www.firestarterseo.com">firestarterseo.com</a></div>
-        <div style={{ marginTop: 6, fontSize: 11, color: "#333" }}>4.9&#9733; Clutch &middot; Top Agency UpCity &middot; 15+ years</div>
+        <div style={{ marginTop: 6, fontSize: 11, color: "var(--text2-lt)" }}>4.9&#9733; Clutch &middot; Top Agency UpCity &middot; 15+ years</div>
       </div>
     </div>
   );

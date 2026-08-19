@@ -18,7 +18,7 @@ export default function SourceSection({ data }) {
         <div style={{ fontFamily: '"Fjalla One",sans-serif', fontSize: 48, textTransform: "uppercase", lineHeight: 0.95, color: "#fff", marginBottom: 6 }}>
           BECOME THE <em style={{ color: "#F48020", fontStyle: "normal" }}>SOURCE.</em>
         </div>
-        <div style={{ fontFamily: '"Fjalla One",sans-serif', fontSize: 22, textTransform: "uppercase", color: "#444", letterSpacing: "0.04em", marginBottom: 24 }}>
+        <div style={{ fontFamily: '"Fjalla One",sans-serif', fontSize: 22, textTransform: "uppercase", color: "var(--text2-lt)", letterSpacing: "0.04em", marginBottom: 24 }}>
           Not Just an Answer.
         </div>
         <p className="intro-lt">
