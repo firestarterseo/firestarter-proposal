@@ -2,6 +2,16 @@
 // fixed, light edits"). The only per-client content is each channel's
 // strategyNote (data.channelCards[i].strategyNote) and the case studies picked
 // from the catalog.
+//
+// This section renders on the light .sec background rather than .sec-dark —
+// per the brand guidelines' ~65% light / 25-30% dark page ratio, this used to
+// be one long uninterrupted dark section (on top of Cover, Source's brand
+// block, and Footer) which read as much heavier/darker than intended. The
+// three "layer" blocks, their nested li-card/ch-li tiles, and the case study
+// cards keep their existing dark styling (proposal.css) — they now read as
+// intentional dark accent cards floating on a light page, the same pattern
+// already used by .onetime-box/.cta-block/.source-callout elsewhere in this
+// document, rather than a full-bleed dark wall.
 
 // Order must match data.channelCards (organic, aiOverviews, localMaps, aeoLlm, googleAds).
 const CHANNEL_LABELS = ["Organic SEO", "AI Overviews", "Local / Maps Pack", "AEO / LLM Citations", "Google Ads — Capture Demand While Organic Builds"];
@@ -10,10 +20,10 @@ export default function StrategySection({ data }) {
   const channels = data.channelCards || [];
 
   return (
-    <div className="sec-dark">
-      <span className="eye-lt">03 &mdash; What We Do</span>
-      <h2 className="h2-lt">One Strategy.<br /><em>Five Channels.</em><br />Everything Compounds.</h2>
-      <p className="intro-lt">
+    <div className="sec">
+      <span className="eye">03 &mdash; What We Do</span>
+      <h2 className="h2">One Strategy.<br /><em>Five Channels.</em><br />Everything Compounds.</h2>
+      <p className="intro">
         Parallel execution across all five discovery channels &mdash; not one at a time. Work in one
         channel amplifies every other. A strong GBP feeds Maps and AI Overviews. High-authority content
         builds organic rankings and earns LLM citations. Strong organic authority lowers your Google Ads
@@ -78,7 +88,7 @@ export default function StrategySection({ data }) {
 
       {data.caseStudies && data.caseStudies.length > 0 && (
         <>
-          <span className="sec-label-lt" style={{ marginTop: 28 }}>Comparable Clients &mdash; What This Produces</span>
+          <span className="sec-label" style={{ marginTop: 28 }}>Comparable Clients &mdash; What This Produces</span>
           <div className="cases">
             {data.caseStudies.map((cs, i) => {
               const CardTag = cs.url ? "a" : "div";
@@ -93,7 +103,7 @@ export default function StrategySection({ data }) {
               );
             })}
           </div>
-          <div style={{ fontSize: 11, color: "var(--text2-lt)", marginTop: 4 }}>Full case studies at firestarterseo.com/case-studies</div>
+          <div style={{ fontSize: 11, color: "var(--text2)", marginTop: 4 }}>Full case studies at firestarterseo.com/case-studies</div>
         </>
       )}
     </div>

@@ -120,9 +120,13 @@
 .proposal .auth-comp-stat { font-size: 11px; color: var(--text2); margin-top: 4px; }
 .proposal .auth-comp-note { font-size: 10px; color: var(--fo); margin-top: 4px; font-weight: 600; }
 
-/* STRATEGY LAYERS */
-.proposal .strategy-layers { display: grid; grid-template-columns: 1fr; gap: 2px; margin: 32px 0; }
-.proposal .layer { background: var(--fd2); border-left: 4px solid var(--fo); padding: 28px 28px 28px 24px; }
+/* STRATEGY LAYERS — these three blocks now sit on the light .sec background
+   (see StrategySection.js) as dark accent cards, so they need real breathing
+   room between them (2px read as one continuous dark mass) and rounded outer
+   corners so each reads as its own distinct card, matching the .pq-lt
+   left-accent-border card convention elsewhere. */
+.proposal .strategy-layers { display: grid; grid-template-columns: 1fr; gap: 20px; margin: 32px 0; }
+.proposal .layer { background: var(--fd2); border-left: 4px solid var(--fo); border-radius: 0 10px 10px 0; padding: 28px 28px 28px 24px; overflow: hidden; }
 .proposal .layer.l2 { border-left-color: var(--fr); }
 .proposal .layer-letter { font-family: "Fjalla One", sans-serif; font-size: 56px; color: var(--fo); opacity: .18; line-height: 1; float: right; margin: -8px -4px 0 16px; }
 .proposal .layer-letter.r { color: var(--fr); }
